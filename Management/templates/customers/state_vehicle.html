@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block header %}
+    <h1>Estado del Vehículo</h1>
+{% endblock header %}
+
+{% block content %}
+
+{% comment %} <ul>
+    {% if list_vehicle %}
+        {% for vehicle in list_vehicle %}
+            <li>{{ vehicle }}</li>
+        {% endfor %}    
+    {% else %}
+        <li>{{ error }}</li>
+    {% endif %}
+</ul> {% endcomment %}
+
+{{ state_vehicle }}
+
+{% if state_vehicle %}
+    <h2>Detalles del Vehículo</h2>
+    <ul>
+        <li>Cliente: {{ state_vehicle.vehicle.customer }}</li>
+        <li>Marca: {{ state_vehicle.vehicle.brand }}</li>
+        <li>Modelo: {{ state_vehicle.vehicle.model }}</li>
+        <li>Año: {{ state_vehicle.vehicle.year }}</li>
+        <li>Fecha de Cita: {{ state_vehicle.date_register|date:"d/M/Y" }}</li>
+        <li>ID de Cita: {{ state_vehicle.id }}</li>
+        <li>
+            Fecha de Finalizado: 
+            {% if state_vehicle.date_finished %} {{ state_vehicle.date_finished|date:"d/M/Y H:i" }} {% else %} En ejecución {% endif %}
+        </li>
+    </ul>
+
+    <h2>Checklist</h2>
+    <ul>
+        <li>En ejecución: {{ state_vehicle.inprogress|state_display }}</li>
+        <li>Finalizado: {{ state_vehicle.completed|state_display }}</li>
+        <li>Estado: {{ state_vehicle.checklist.state|state_display }}</li>
+        <li>Luces Delanteras: {{ state_vehicle.checklist.front_lights|state_display }}</li>
+        <li>Luces Traseras: {{ state_vehicle.checklist.rear_lights|state_display }}</li>
+        <li>Chasis: {{ state_vehicle.checklist.chassis|state_display }}</li>
+        <li>Limpieza: {{ state_vehicle.checklist.cleaning|state_display }}</li>
+        <li>Extinguidor: {{ state_vehicle.checklist.extinguisher|state_display }}</li>
+        <li>Kit primeros auxilios: {{ state_vehicle.checklist.first_aid_kit|state_display }}</li>
+        <li>Triángulos: {{ state_vehicle.checklist.triangles|state_display }}</li>
+        <li>Gata hidráulica: {{ state_vehicle.checklist.hydraulic_jack|state_display }}</li>
+        <li>Rueda de repuesto: {{ state_vehicle.checklist.spare_wheel|state_display }}</li>
+       
+
+
+
+
+
+        {% comment %} <li>Estado: {% if state_vehicle.checklist.state %}Completo{% else %}Incompleto{% endif %}</li>
+        <li>Luces Delanteras: {% if state_vehicle.checklist.front_lights %}Sí{% else %}No{% endif %}</li>
+        <li>Luces Traseras: {% if state_vehicle.checklist.rear_lights %}Sí{% else %}No{% endif %}</li> {% endcomment %}
+        <!-- Otros elementos del checklist aquí -->
+    </ul>
+{% else %}
+    <p>{{ error }}</p>
+{% endif %}
+
+{% comment %} {{ state_vehicle }} {% endcomment %}
+        
+        
+        
+<p>VER CHECKLIST ESTADO VEHICULO - IMPLEMENTAR</p> 
+         
+<a href="{% url 'vehicle' %}">Ver listado Vehículos</a>
+{% endblock content %}

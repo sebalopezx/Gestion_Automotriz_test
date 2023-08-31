@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Registrar cita</h1>
+{% endblock header %}
+
+{% block content %}
+
+{% if user_vehicles %}
+    <form method="POST" readonly=true>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrar Cita</button>
+    </form>
+{% else %}
+    <p>Primero debes registrar un vehículo antes de crear una cita.</p>
+    <button><a href="{% url 'register_vehicle' %}">Registrar Vehículo</a></button>
+    {{ form.as_p }}
+    <button type="submit" disabled>Registrar Cita</button>
+
+{% endif %}
+
+
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock content %}

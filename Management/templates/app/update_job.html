@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Checklist Vehículo: {{ job.appointment.vehicle }}</h1>
+    <h3>Cita ID: {{ job.id }}</h3>
+{% endblock header %}
+
+{% block content %}
+
+    <form method="POST"> 
+        
+        {% csrf_token %}
+        {{ form_update.as_p }}
+        <button type="submit">
+            Guardar
+        </button>
+    </form>
+    <br>
+    <button>
+        <a href="{% url 'list_jobs_inprogress' %}">
+            Volver a Listado de Trabajos
+        </a>
+    </button>
+
+{% endblock content %}

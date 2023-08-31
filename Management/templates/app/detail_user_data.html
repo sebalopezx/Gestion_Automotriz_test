@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Mis datos</h1>
+{% endblock header %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% if list_data_update %}
+        {% comment %} {% for data in list_data_update %} {% endcomment %}
+        {% csrf_token %}
+        {{ list_data_update.as_p }}
+        {% comment %} <li>Username: {{ list_data_update.username }}</li>
+        <li>Email: {{ list_data_update.email }}</li>
+        <li>Nombre: {{ list_data_update.first_name }}</li>
+        <li>Apellido: {{ list_data_update.last_name }}</li>  {% endcomment %}
+        {% comment %} {% endfor %}     {% endcomment %}
+    {% else %}
+        {{ error }}
+    {% endif %}
+    <button type="submit">
+        Modificar datos
+    </button>
+</form>
+
+
+<p>VER </p> 
+ 
+{% comment %} <a href="{% url 'register_vehicle' %}">Registrar nuevo Vehículo</a> {% endcomment %}
+{% endblock content %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Listado de Mecánicos</h1>
+{% endblock header %}
+
+{% block content %}
+    <ul>
+    {% for mechanic in list_mechanic %}
+        <li>{{ mechanic }}</li>
+        <li>{{ mechanic.phone }}</li>
+        <button>
+            <a href="{% url 'update_mechanic' mechanic.id %}">
+                    Actualizar
+            </a>
+        </button>
+        <br>
+        <form action="{% url 'delete_mechanic' mechanic.id %}" method="POST">
+            {% csrf_token %} 
+            <button>
+                Eliminar
+            </button>
+        </form>
+    {% endfor %}
+    </ul>
+
+        
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+    <button>
+        <a href="{% url 'register_mechanic' %}">Registrar nuevo Mecánico</a>
+    </button>
+    
+    {% endblock content %}

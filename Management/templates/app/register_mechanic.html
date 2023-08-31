@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Registrar Mecánico</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form_mechanic.as_p }}
+        <button>
+            Registrar
+        </button>
+    </form>
+    
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+    <button>
+        <a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a>
+    </button>
+    
+{% endblock content %}

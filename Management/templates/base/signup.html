@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Sign Up</h1>
+{% endblock header %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form_register.as_p}}
+    <button>
+        Registrarse
+    </button>
+</form>
+{{error}}
+
+{% endblock content %}
+

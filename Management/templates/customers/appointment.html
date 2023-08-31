@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Citas</h1>
+{% endblock header %}
+
+{% block content %}
+
+{% comment %} <ul>
+    {% for date in list_dates %}
+        {% if date %}
+            <li>{{ date }}</li>
+        {% else %}
+            {{ error }}
+        {% endif %}
+    {% endfor %}    
+</ul> {% endcomment %}
+<ul>
+    {% if list_dates %}
+        {% for date in list_dates %}
+            <li>{{ date }}</li>
+            <form action="{% url 'delete_appointment' date.id %}" method="POST">
+                {% csrf_token %}
+
+                {% if date.inprogress %}
+                <button disabled>
+                    Cancelar Cita
+                </button>
+                {% else %}
+                <button>
+                    Cancelar Cita
+                </button>
+                {% endif %}
+            </form>
+        {% endfor %}
+    {% else %}
+        <li>{{ error }}</li>
+    {% endif %}
+</ul>
+
+
+<p>VER CANCELAR CITA - IMPLEMENTAR</p> 
+ 
+<a href="{% url 'register_date' %}">Registrar nueva Cita</a>
+{% endblock content %}

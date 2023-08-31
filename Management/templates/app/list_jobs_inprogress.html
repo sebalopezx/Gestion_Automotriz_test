@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Listado de Trabajos en Ejecución</h1>
+{% endblock header %}
+
+{% block content %}
+
+<ul>
+    {% for job in list_jobs %}
+    {% if not job.appointment.completed %}
+        <li>{{ job }}</li>
+        <li>Detalles del Trabajo: {{ job.description_job }}</li>
+        <button>
+            <a href="{% url 'checklist' job.id %}">
+                CheckList
+            </a>
+        </button>
+        <br>
+        <button>
+            <a href="{% url 'update_job' job.id %}">
+                Actualizar detalles
+            </a>   
+        </button>
+        <br>     
+        <form action="{% url 'delete_job_inprogress' job.id 'inprogress' %}" method="POST">
+            {% csrf_token %} 
+            <button>
+                Eliminar
+            </button>
+        </form>
+
+        <br> 
+        {% comment %} {% url 'complete_job' job.id %} {% endcomment %}
+        {% if job.checklist.state %}
+        <form action="{% url 'completed_job' job.id %}" method="POST"> 
+            {% csrf_token %} 
+            <button>
+                Finalizar trabajo
+            </button>
+        </form>
+        {% else %}
+        <button disabled>
+            Finalizar trabajo
+        </button>
+        {% endif %}
+
+    {% endif %}
+    {% endfor %}
+    </ul> 
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

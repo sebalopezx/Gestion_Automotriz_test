@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Vehículos</h1>
+{% endblock header %}
+
+{% block content %}
+
+<ul>
+    {% if list_vehicle %}
+        {% for vehicle in list_vehicle %}
+            <li>{{ vehicle }}</li>
+
+                {% for date in appointment %}
+                    {% if date.vehicle_id == vehicle.id %}
+                        {% if date.inprogress %}
+                            <button>
+                                <a href="{% url 'state_vehicle' date.id %}">
+                                    Estado Vehículo. ID Cita:({{ date.id }})
+                                </a>
+                            </button>
+                        {% else %}
+                            <button disabled>
+                                    Vehículo en espera                     
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            <br>
+            <form action="{% url 'delete_vehicle' vehicle.id %}" method="POST">
+                {% csrf_token %}
+                <button>
+                    Eliminar Vehículo
+                </button>
+            </form>
+        {% endfor %}    
+    {% else %}
+        <li>{{ error }}</li>
+    {% endif %}
+</ul>
+
+
+
+<p style="background:red;color:white;"> CORREGIR ID del estado del vehiculo</p> 
+ 
+<a href="{% url 'register_vehicle' %}">Registrar nuevo Vehículo</a>
+{% endblock content %}
