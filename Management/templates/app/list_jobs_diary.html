@@ -1,0 +1,66 @@
+{% extends 'base_recepcionist.html' %}
+{% load static %}
+
+{% block header %}
+    <h1>Listado de trabajos del día:  {{ current_date }}</h1>
+{% endblock header %}
+
+{% block content %}
+    <ul>
+        {% if list_jobs_diary %}
+
+            {% for job in list_jobs_diary %}
+            {% if not job.appointment.completed and job.appointment.inprogress %}
+                <li>{{ job }}</li>
+                <li>Estado: {{ job.status }}</li>
+                <li>Detalles del Trabajo: {{ job.description_job }}</li>
+                
+                <button>
+                    <a href="{% url 'checklist' job.id %}">
+                        CheckList
+                    </a>
+                </button>
+                <br>
+                <button>
+                    <a href="{% url 'update_job' job.id %}">
+                        Agregar detalles y servicios
+                    </a>   
+                </button>
+                <br>     
+                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
+                    {% csrf_token %} 
+                    <button>
+                        Cancelar
+                    </button>
+                </form>
+
+                <br> 
+
+                {% if job.status.id == 7 %}
+                <form action="{% url 'completed_job' job.id %}" method="POST"> 
+                    {% csrf_token %} 
+                    <button>
+                        Finalizar trabajo
+                    </button>
+                </form>
+                {% else %}
+                <button disabled>
+                    Finalizar trabajo
+                </button>
+                {% endif %}
+
+            {% endif %}
+            {% endfor %}
+
+        {% else %}
+            {{ error_diary }}
+        {% endif %}
+    </ul>  
+    
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

@@ -1,8 +1,20 @@
-from re import A
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import CheckboxInput, DateField, DateTimeField, TimeField
 
+import string
+import secrets
+
+# Validadores
+from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
+# Creación de grupos
+from django.contrib.auth.models import Group
+
+# Create your groups here.
+# Crear el grupo de clientes
+group_customer, created = Group.objects.get_or_create(name='Customer')
+# Crear el grupo de recepcionistas
+group_recepcionist, created = Group.objects.get_or_create(name='Recepcionist')
 
 
 # Create your models here.
@@ -19,9 +31,10 @@ class Vehicle(models.Model):
     brand = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     patent = models.CharField(max_length=10)
+    year = models.PositiveIntegerField(default=0)
     
     def __str__(self):
-        return f"{self.brand} {self.model}, Patente: {self.patent}  de: {self.customer}"
+        return f"{self.brand.capitalize()} {self.model.capitalize()}, Patente: {self.patent}  de: {self.customer.first_name} {self.customer.last_name}"
 
 class Workshop(models.Model):
     name = models.CharField(max_length=100)
@@ -29,13 +42,16 @@ class Workshop(models.Model):
     num_addres = models.IntegerField()
 
     def __str__(self):
-        return f"{self.name} > {self.address} # {self.num_addres}"
+        return f"{self.name}. {self.address} # {self.num_addres}"
 
 class Mechanic(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
-    # phone = models.IntegerField() # cambiar a phone number
+    # phone = models.IntegerField()
+    phone = models.CharField(max_length=9,
+                             validators=[
+                                 MaxLengthValidator(limit_value=9)
+                             ]) # cambiar a phone number
     # employee = models.ForeignKey(User, 
     #                              on_delete=models.CASCADE,
     #                              null=False,
@@ -59,7 +75,8 @@ class Attention(models.Model):
         return f"{self.formatted_attention()}"
 
 class Appointment(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    # VER SI DEJAR COMO CASCADA O UN ATRIBUTO BOOLEANO PARA CONTROLAR LA ELIMINACION MIENTRAS SE TRABAJA
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True)
     attention = models.ForeignKey(Attention, on_delete=models.CASCADE)
     date_register = models.DateField()
     date_created = models.DateTimeField(auto_now_add=True) # auto add: ingresa time automaticamente si no se ingresa manualmente
@@ -74,20 +91,47 @@ class Appointment(models.Model):
     #     return "Completo" if self.state else "Incompleto"
 
     def __str__(self):
-        return f"Cita para vehículo: {self.vehicle} __  Fecha de la Cita: {self.date_register.strftime('%d-%m-%Y')}"
+        return f"Cita para vehículo: {self.vehicle} __  Fecha de la Cita: {self.date_register.strftime('%d-%m-%Y')} {self.attention}"  
+
+class Service(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.PositiveIntegerField()
+    earn_points = models.PositiveIntegerField()
+
+    def formatted_price(self):
+        return '${:,.0f} pesos'.format(self.price)
+    
+    def __str__(self):
+        return f"{self.id}. {self.name} {self.formatted_price()}"
+
+
+class VehicleStatus(models.Model):
+    status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.id}. {self.status}"
 
 class Job(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     description_job = models.TextField(null=True, blank=True)
+    status = models.ForeignKey(VehicleStatus, on_delete=models.CASCADE)
+    # service = models.ManyToManyField(Service,  through='Work') # related_name='works', unique=False)
     # checklist = models.OneToOneField(Checklist, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         # if self.description_job == None:
         #     self.description_job = "Sin descripción"
         #     return f"({self.id}) {self.appointment} {self.description_job}"
         # else:
-        return f"({self.id}) {self.appointment}"
+        return f"{self.appointment}"
 
+class Work(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    status_service = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.id}. {self.job} {self.service} {self.status_service}"
 
 class Point(models.Model):
     customer = models.ForeignKey(User,
@@ -99,9 +143,27 @@ class Point(models.Model):
     def __str__(self):
         return f" {self.customer} - Puntos: {self.points}"
 
+class Coupon(models.Model):
+    customer = models.ForeignKey(User,
+                                 on_delete=models.CASCADE,
+                                 null=False,
+                                 blank=False)
+    coupon = models.CharField(max_length=50, unique=True)
+    valid = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.coupon}"
+
+    @staticmethod
+    def generate_coupon_code():
+        # Generar un código de cupón único
+        alphabet = string.ascii_letters + string.digits
+        coupon = ''.join(secrets.choice(alphabet) for i in range(12))  # Puedes ajustar la longitud del código
+        return coupon
+
 class Checklist(models.Model):
     job = models.OneToOneField(Job, on_delete=models.CASCADE)
-    state = models.BooleanField(default=False)
+    # state = models.BooleanField(default=False)
     front_lights = models.BooleanField(default=False)
     rear_lights = models.BooleanField(default=False)
     chassis = models.BooleanField(default=False)
@@ -115,7 +177,6 @@ class Checklist(models.Model):
     def __str__(self):
         return f"""Checklist: 
                 {self.id}.
-                {self.state}
                 {self.front_lights}
                 {self.rear_lights}
                 {self.chassis} 

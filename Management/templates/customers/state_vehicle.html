@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base_customer.html' %}
 {% load filters %}
+{% load static %}
 
 {% block header %}
     <h1>Estado del Vehículo</h1>
@@ -18,27 +19,98 @@
 </ul> {% endcomment %}
 
 {{ state_vehicle }}
+<br>
+OT = {{ state_vehicle.id }}
 
 {% if state_vehicle %}
     <h2>Detalles del Vehículo</h2>
     <ul>
-        <li>Cliente: {{ state_vehicle.vehicle.customer }}</li>
-        <li>Marca: {{ state_vehicle.vehicle.brand }}</li>
-        <li>Modelo: {{ state_vehicle.vehicle.model }}</li>
-        <li>Año: {{ state_vehicle.vehicle.year }}</li>
-        <li>Fecha de Cita: {{ state_vehicle.date_register|date:"d/M/Y" }}</li>
-        <li>ID de Cita: {{ state_vehicle.id }}</li>
+        <li>Cliente: {{ state_vehicle.appointment.vehicle.customer }}</li>
+        <li>Marca: {{ state_vehicle.appointment.vehicle.brand }}</li>
+        <li>Modelo: {{ state_vehicle.appointment.vehicle.model }}</li>
+        <li>Año: {{ state_vehicle.appointment.vehicle.year }}</li>
+        {% comment %} <li>Puntos totales: {{ points.points }}</li>
+        <li>AER: {{ state_vehicle.service.name }}</li> {% endcomment %}
+        <li>Fecha de Cita: {{ state_vehicle.appointment.date_register|custom_months_format }} a las {{ state_vehicle.appointment.attention }}</li>
+        <li>ID de Cita: {{ state_vehicle.appointment_id }}</li>
         <li>
             Fecha de Finalizado: 
-            {% if state_vehicle.date_finished %} {{ state_vehicle.date_finished|date:"d/M/Y H:i" }} {% else %} En ejecución {% endif %}
+            {% comment %} {% if state_vehicle.appointment.date_finished %}
+            {{ state_vehicle.appointment.date_finished|date:"d" }} 
+            {{ state_vehicle.appointment.date_finished|date:"F"|capitalize_month }} 
+            {{ state_vehicle.appointment.date_finished|date:"Y H:i A" }}
+            {% else %}
+              En ejecución
+            {% endif %} {% endcomment %}
+
+
+            {% if state_vehicle.appointment.date_finished %} 
+                {% comment %} {{ state_vehicle.appointment.date_finished|date:"d/F/Y H:i A"|capitalize_month }} {% endcomment %}
+                {{ state_vehicle.appointment.date_finished|custom_date_format  }}
+            {% else %} 
+                En ejecución 
+            {% endif %} 
         </li>
     </ul>
 
-    <h2>Checklist</h2>
+    <h2>Detalle Servicios y Presupuesto</h2>
     <ul>
-        <li>En ejecución: {{ state_vehicle.inprogress|state_display }}</li>
-        <li>Finalizado: {{ state_vehicle.completed|state_display }}</li>
-        <li>Estado: {{ state_vehicle.checklist.state|state_display }}</li>
+        {% for service in services %}
+        <li>{{ service.service.id }}. {{ service.service.name }} {{ service.service.price|format_clp }} - Estado:{{ service.status_service|state_display }}
+        Puntos otorgados: {{ service.service.earn_points }}</li>
+        {% endfor %}
+        <li>Puntos ganados totales: {{ earn_points }}</li>
+    </ul>
+    <br>
+    {% if total_price %}
+    Presupuesto: {{ total_price|format_clp }}
+        {% if points.points >= POINTS %}
+        <button id="btnDiscount" data-total-price="{{ total_price }}">
+            {% comment %} onclick="generate_discount(parseFloat({{ total_price }}))"> {% endcomment %}
+            Ver descuento
+        </button>
+        <p id="discount" class="descuento"></p>
+{% comment %} 
+        <script>
+            function generate_discount(total_price){
+                console.log("ingresando descuento")
+                console.log("Valor total_price:", total_price);
+                const element = document.getElementById('descuento');
+                const discount = 0.90;
+                const discounted_price = total_price*discount
+                const formatted_price = discounted_price.toLocaleString('es-CL', {
+                    style: 'currency',
+                    currency: 'CLP'
+                });
+                console.log("Valor total_price:", formatted_price);
+                
+                element.innerHTML = `Precio con descuento: ${formatted_price} pesos.`;
+                // return total_price*discount
+            };
+        </script> {% endcomment %}
+        {% else %}
+            <button data-total-price="{{ total_price }}" disabled>
+                Ver descuento
+            </button>
+        {% endif %}
+
+    {% else %}
+    Presupuesto: Sin presupuesto
+    {% endif %}
+
+    <h2>Checklist</h2>
+    <p> {{ state_vehicle.status }}</p>
+    {% comment %} {% if state_vehicle.appointment.completed %}
+    <p> {{ state_vehicle.status }}</p>
+    {% else %}
+    <p>En ejecución</p>
+    {% endif %}  {% endcomment %}
+
+    <p>Descripción: {{ state_vehicle.description_job }}</p>
+    <ul>
+        <li>Cita agendada: {{ state_vehicle.appointment.inprogress|state_display }}</li>
+        {% comment %} <li>Finalizado: {{ state_vehicle.completed|state_display }}</li> {% endcomment %}
+        {% comment %} <li>Estado: {{ state_vehicle.checklist.state|state_display }}</li> {% endcomment %}
         <li>Luces Delanteras: {{ state_vehicle.checklist.front_lights|state_display }}</li>
         <li>Luces Traseras: {{ state_vehicle.checklist.rear_lights|state_display }}</li>
         <li>Chasis: {{ state_vehicle.checklist.chassis|state_display }}</li>
@@ -71,3 +143,7 @@
          
 <a href="{% url 'vehicle' %}">Ver listado Vehículos</a>
 {% endblock content %}
+
+{% block script %}
+    <script src="{% static 'js/discount.js' %}"></script>
+{% endblock script %}

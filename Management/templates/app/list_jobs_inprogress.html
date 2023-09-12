@@ -1,53 +1,115 @@
-{% extends 'base.html' %}
+{% extends 'base_recepcionist.html' %}
+{% load static %}
 
 {% block header %}
-    <h1>Listado de Trabajos en Ejecución</h1>
+    <h1>Listado de trabajos en proceso de ejecución</h1>
 {% endblock header %}
 
 {% block content %}
+    {% comment %} <ul>
+        {% if list_jobs_diary %}
 
-<ul>
-    {% for job in list_jobs %}
-    {% if not job.appointment.completed %}
-        <li>{{ job }}</li>
-        <li>Detalles del Trabajo: {{ job.description_job }}</li>
-        <button>
-            <a href="{% url 'checklist' job.id %}">
-                CheckList
-            </a>
-        </button>
-        <br>
-        <button>
-            <a href="{% url 'update_job' job.id %}">
-                Actualizar detalles
-            </a>   
-        </button>
-        <br>     
-        <form action="{% url 'delete_job_inprogress' job.id 'inprogress' %}" method="POST">
-            {% csrf_token %} 
-            <button>
-                Eliminar
-            </button>
-        </form>
+            {% for job in list_jobs_diary %}
+            {% if not job.appointment.completed and job.appointment.inprogress %}
+                <li>{{ job }}</li>
+                <li>Estado: {{ job.status }}</li>
+                <li>Detalles del Trabajo: {{ job.description_job }}</li>
+                
+                <button>
+                    <a href="{% url 'checklist' job.id %}">
+                        CheckList
+                    </a>
+                </button>
+                <br>
+                <button>
+                    <a href="{% url 'update_job' job.id %}">
+                        Agregar detalles y servicios
+                    </a>   
+                </button>
+                <br>     
+                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
+                    {% csrf_token %} 
+                    <button>
+                        Cancelar
+                    </button>
+                </form>
 
-        <br> 
-        {% comment %} {% url 'complete_job' job.id %} {% endcomment %}
-        {% if job.checklist.state %}
-        <form action="{% url 'completed_job' job.id %}" method="POST"> 
-            {% csrf_token %} 
-            <button>
-                Finalizar trabajo
-            </button>
-        </form>
+                <br> 
+
+                {% if job.status.id == 7 %}
+                <form action="{% url 'completed_job' job.id %}" method="POST"> 
+                    {% csrf_token %} 
+                    <button>
+                        Finalizar trabajo
+                    </button>
+                </form>
+                {% else %}
+                <button disabled>
+                    Finalizar trabajo
+                </button>
+                {% endif %}
+
+            {% endif %}
+            {% endfor %}
+
         {% else %}
-        <button disabled>
-            Finalizar trabajo
-        </button>
+            {{ error_diary }}
         {% endif %}
+    </ul>   {% endcomment %}
 
-    {% endif %}
-    {% endfor %}
+
+    {% comment %} <h1>Listado de trabajos en proceso de ejecución</h1> {% endcomment %}
+    <ul>
+        {% if list_jobs %}
+
+            {% for job in list_jobs %}
+            {% if not job.appointment.completed and job.appointment.inprogress %}
+                <li>{{ job }}</li>
+                <li>Estado: {{ job.status }}</li>
+                <li>Detalles del Trabajo: {{ job.description_job }}</li>
+                
+                <button>
+                    <a href="{% url 'checklist' job.id %}">
+                        CheckList
+                    </a>
+                </button>
+                <br>
+                <button>
+                    <a href="{% url 'update_job' job.id %}">
+                        Agregar detalles y servicios
+                    </a>   
+                </button>
+                <br>     
+                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
+                    {% csrf_token %} 
+                    <button>
+                        Cancelar
+                    </button>
+                </form>
+
+                <br> 
+                {% comment %} {% url 'complete_job' job.id %} {% endcomment %}
+                {% if job.status.id == 7 %}
+                <form action="{% url 'completed_job' job.id %}" method="POST"> 
+                    {% csrf_token %} 
+                    <button>
+                        Finalizar trabajo
+                    </button>
+                </form>
+                {% else %}
+                <button disabled>
+                    Finalizar trabajo
+                </button>
+                {% endif %}
+
+            {% endif %}
+            {% endfor %}
+
+        {% else %}
+            {{ error }}
+        {% endif %}
     </ul> 
+
     <ul class="messages">
         {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -55,3 +117,8 @@
     </ul>
 
 {% endblock content %}
+
+
+{% block script %}
+    {% comment %} <script src="{% static 'js/occupied_dates.js' %}"></script> {% endcomment %}
+{% endblock script %}

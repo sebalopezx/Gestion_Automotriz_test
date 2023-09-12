@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'base_recepcionist.html' %}
+{% load filters %}
 
 {% block header %}
     <h1>Checklist Vehículo: {{ job.appointment.vehicle }}</h1>
@@ -7,10 +8,13 @@
 
 {% block content %}
 
-    <form method="POST"> 
+    <form method="POST" id="updateJobForm"> 
         
         {% csrf_token %}
-        {{ form_update.as_p }}
+        {% comment %} {{ form_update.as_p }} {% endcomment %}
+        {{ form_job.as_p }}
+        {{ form_service.as_p }}
+        {% comment %} {{ form_status.as_p }} {% endcomment %}
         <button type="submit">
             Guardar
         </button>
@@ -22,4 +26,28 @@
         </a>
     </button>
 
+    {% comment %} <script>
+        // Espera a que se cargue completamente la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Encuentra el formulario por su ID
+            const updateJobForm = document.getElementById('updateJobForm');
+    
+            // Agrega un manejador de eventos para el evento 'submit' del formulario
+            updateJobForm.addEventListener('submit', function(event) {
+                // Encuentra el campo de selección de servicios por su nombre
+                const serviceField = document.getElementsByName('service');
+    
+                // Restablece el campo de selección de servicios deseleccionando todos los elementos
+                serviceField.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
+            });
+        });
+    </script> {% endcomment %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    
 {% endblock content %}

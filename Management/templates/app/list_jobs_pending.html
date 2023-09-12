@@ -1,37 +1,47 @@
-{% extends 'base.html' %}
+{% extends 'base_recepcionist.html' %}
 
 {% block header %}
     <h1>Listado de Citas Pendientes</h1>
 {% endblock header %}
 
 {% block content %}
-    <ul>
-        {% for date in list_appointments %}
-        {% if not date.inprogress %}
-            <li>{{ date.id}}. {{ date }}</li>
-            {% if date.description_customer %}
-            <li>Descripción del Cliente: {{ date.description_customer }}</li>
-            {% else %}
-            <li>Descripción del Cliente: Sin descripción</li>
-            {% endif %}
 
-            <form method="POST" action="{% url 'generate_ot' date.id %}">
-                {% csrf_token %}
-                <label for="description">Descripción:</label>
-                <input type="text" name="description" id="description" required>
-                <button type="submit">
-                    Generar OT
-                </button>
-            </form>
-            <br>  
-            <form action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST">
-                {% csrf_token %} 
-                <button>
-                    Eliminar
-                </button>
-            </form>
+    <ul>
+        {% if list_appointments %}
+
+            {% for date in list_appointments %}
+            {% if not date.inprogress and date.date_finished is None %}
+                <li>{{ date.id}}. {{ date }}</li>
+                {% if date.description_customer %}
+                <li>Descripción del Cliente: {{ date.description_customer }}</li>
+                {% else %}
+                <li>Descripción del Cliente: Sin descripción</li>
+                {% endif %}
+                <li>{{ date.job.id  }}</li>
+
+                <form method="POST" action="{% url 'generate_ot' date.id %}">
+                    {% csrf_token %}
+                    {% comment %} <label for="description">Descripción:</label> {% endcomment %}
+                    {% comment %} <input type="text" name="description" id="description" required> {% endcomment %}
+                    {{ form_job.as_p }}
+                    {{ form_services.as_p }}
+                    <button type="submit">
+                        Generar Trabajo
+                    </button>
+                </form>
+                <br>  
+                <form action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST">
+                    {% csrf_token %} 
+                    <button>
+                        Cancelar
+                    </button>
+                </form>
+            {% endif %}
+            {% endfor %}
+
+        {% else %}
+            {{ error }}
         {% endif %}
-        {% endfor %}
     </ul>
 
 

@@ -1,0 +1,34 @@
+Servicios
+
+Servicio diagnóstico 10000 10
+Cambio de Frenos  50000 50
+Cambio líquido frenos y purga 30000 30
+Cambio bujía x1 10000 5
+Cambio de aceite 20000 10
+Cambio de neumáticos 40000 40
+Alineación y Balanceo 20000 15
+Cambio de correa 80000 80
+
+Atención
+8:00
+13:00
+
+Mecánico
+Alan
+Brito
+123123123
+
+Sucursal
+Taller Automotriz Maipú
+Maipú, Calle Saturno
+999
+
+Estado
+1. En espera
+2. En diagnóstico
+3. En espera confirmación de presupuesto
+4. En mantención
+5. En espera de repuesto
+6. Listo para entrega
+7. Finalizado
+8. Cancelado

@@ -1,0 +1,72 @@
+$color-primary: #ff4f5a;
+$border-primary: red;
+
+@mixin main-font {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+@mixin secondary-font {
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    @include main-font;
+}
+
+
+.container-coupon{
+    background-color: #dedede;
+}
+.coupon .kanan {
+    border-left: 1px dashed #ddd;
+    width: 40% !important;
+    position:relative;
+}
+
+.coupon .kanan .info::after, .coupon .kanan .info::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #dedede;
+    border-radius: 100%;
+}
+.coupon .kanan .info::before {
+    top: -10px;
+    left: -10px;
+}
+
+.coupon .kanan .info::after {
+    bottom: -10px;
+    left: -10px;
+}
+.coupon .time {
+    font-size: 1.6rem;
+}
+
+
+// FOOTER
+// footer a{
+//     color: whitesmoke;
+// }
+// footer h4{
+//     text-transform: uppercase;
+//     font-weight: bold;
+// }
+// footer ul{
+//     display: flex;
+//     list-style: none;
+//     // width: 535px;
+// }
+// footer ul li{
+//     margin-left: 0;
+// }
+// footer ul li a{
+//     // font-family: "fuentePrincipal"; 
+//     text-align: none;
+//     color: $color-primary;
+//     margin: 0 15px;
+//     padding: 3px;
+//     transition: 0.5s;
+//     text-decoration: none;
+// }

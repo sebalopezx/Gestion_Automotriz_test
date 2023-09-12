@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_customer.html' %}
 
 {% block header %}
     <h1>Vehículos</h1>
@@ -6,22 +6,38 @@
 
 {% block content %}
 
-<ul>
+{% comment %} <ul>
     {% if list_vehicle %}
         {% for vehicle in list_vehicle %}
-            <li>{{ vehicle }}</li>
+            <li>{{ vehicle }}</li> {% endcomment %}
 
-                {% for date in appointment %}
+                {% comment %} {% for date in appointment %}
                     {% if date.vehicle_id == vehicle.id %}
                         {% if date.inprogress %}
                             <button>
                                 <a href="{% url 'state_vehicle' date.id %}">
-                                    Estado Vehículo. ID Cita:({{ date.id }})
+                                    ID Cita:({{ date.id }}) Estado Vehículo
                                 </a>
                             </button>
                         {% else %}
                             <button disabled>
-                                    Vehículo en espera                     
+                                ID Cita:({{ date.id }}) Vehículo en espera            
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %} {% endcomment %}
+
+                {% comment %} {% for job in list_job %}
+                    {% if job.appoitment_id.vehicle_id == vehicle.id and job.id %}
+                        {% if job.appoitment_id.inprogress %}
+                            <button>
+                                <a href="{% url 'state_vehicle' job.appoitment_id.id %}">
+                                    ID Cita:({{ job.appoitment_id.id }}) Estado Vehículo
+                                </a>
+                            </button>
+                        {% else %}
+                            <button disabled>
+                                ID Cita:({{ job.appoitment_id.id }}) Vehículo en espera            
                             </button>
                         {% endif %}
                     {% endif %}
@@ -38,8 +54,44 @@
     {% else %}
         <li>{{ error }}</li>
     {% endif %}
-</ul>
+</ul> {% endcomment %}
 
+
+<ul>
+    <!-- Identificar si existen vehiculos -->
+    {% if list_vehicle %}
+        {% for vehicle in list_vehicle %}
+            <li>{{ vehicle }}</li>
+            <!-- appointment_set permite accedes a las relaciones del vhiculo con las citas -->
+            {% for appointment in vehicle.appointment_set.all %}
+                {% if appointment.inprogress and appointment.job_set.all %}
+                    <button>
+                        <a href="{% url 'state_vehicle' appointment.id %}">
+                            ID Cita:({{ appointment.id }}) Estado Vehículo
+                        </a>
+                    </button>
+                {% elif appointment.inprogress and not appointment.job_set.all %}
+                    <button disabled>
+                        ID Cita:({{ appointment.id }}) Trabajo eliminado            
+                    </button>
+                {% else %}
+                    <button disabled>
+                        ID Cita:({{ appointment.id }}) Vehículo en espera            
+                    </button>
+                {% endif %}
+            {% endfor %}
+            <br>
+            <form action="{% url 'delete_vehicle' vehicle.id %}" method="POST">
+                {% csrf_token %}
+                <button>
+                    Eliminar Vehículo
+                </button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <li>{{ error }}</li>
+    {% endif %}
+</ul>
 
 
 <p style="background:red;color:white;"> CORREGIR ID del estado del vehiculo</p> 

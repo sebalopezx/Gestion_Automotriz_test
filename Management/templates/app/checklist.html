@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block header %}
     <h1>Checklist Vehículo: {{ checklist.job.appointment.vehicle }}</h1>
@@ -6,15 +7,45 @@
 {% endblock header %}
 
 {% block content %}
+{% comment %} {{ form_work }} {% endcomment %}
+{% comment %} {% for check in form_work %}
+    {{ check }}
+{% endfor %} {% endcomment %}
+<br>
 
-    <form method="POST"> 
-        
+    <form method="POST" id="form_update_checklist"> 
         {% csrf_token %}
+        {{ form_status }}
         {{ form_checklist.as_p }}
-        <button type="submit">
+    <br>
+    
+    <hr>
+        
+        Servicios:
+        <ul>
+            {% for service in list_services %}
+            <li>
+                {{ service.pk }}
+                {{ service.service }} - 
+                {{ service.status_service }} - 
+                {% comment %} {{ form_work }} {% endcomment %}
+                <input type="checkbox" name="service_{{ service.id }}"
+                {% if service.status_service %}checked{% endif %}>
+                <form action="{% url 'delete_service' service.pk checklist.id %}" method="POST">
+                    {% csrf_token %} 
+                    <button>
+                        Eliminar Servicio
+                    </button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul> 
+
+        <button id="btn_update_checklist" type="button">
             Guardar
         </button>
     </form>
+
     <br>
     <button>
         <a href="{% url 'list_jobs_inprogress' %}">
@@ -26,4 +57,27 @@
     action="{% url 'update_job' checklist.id %}"
 {% endcomment %}
 
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
 {% endblock content %}
+
+{% block script %}
+    <script src={% static 'js/update_checklist.js' %}></script>
+{% endblock script %}
+{% comment %} <script>
+    
+document.addEventListener('DOMContentLoaded', function() {
+    var selectAllCheckbox = document.querySelector('.select-all');
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    selectAllCheckbox.addEventListener('change', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
+});
+</script> {% endcomment %}

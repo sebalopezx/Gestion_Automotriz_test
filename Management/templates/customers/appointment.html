@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_customer.html' %}
 
 {% block header %}
     <h1>Citas</h1>
@@ -19,10 +19,10 @@
     {% if list_dates %}
         {% for date in list_dates %}
             <li>{{ date }}</li>
-            <form action="{% url 'delete_appointment' date.id %}" method="POST">
+            <form action="{% url 'cancel_appointment' date.id %}" method="POST">
                 {% csrf_token %}
 
-                {% if date.inprogress %}
+                {% if date.inprogress or date.date_finished is not None %}
                 <button disabled>
                     Cancelar Cita
                 </button>
@@ -39,7 +39,12 @@
 </ul>
 
 
-<p>VER CANCELAR CITA - IMPLEMENTAR</p> 
+
  
 <a href="{% url 'register_date' %}">Registrar nueva Cita</a>
+
+
+
 {% endblock content %}
+
+
