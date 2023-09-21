@@ -32,7 +32,12 @@ from django.db.models import Q
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    print(request.user)
+    user_type_value = user_type(request.user)
+    base_template = template_base(user_type_value)
+    return render(request, 'index.html',{
+        'base_template':base_template
+    })
 
 # VIEWS LOGIN 
 
@@ -164,21 +169,32 @@ def signout(request):
 @login_required
 @customer_required
 def register_vehicle(request):
+    # success_message = 'Vehículo creado exitosamente.'
+    # error_message = 'Error al registrar vehículo'
+
     if request.method == 'POST':
         form_vehicle = VehicleForm(request.POST)
-        if form_vehicle.is_valid():
-            vehicle = form_vehicle.save(commit=False)
-            vehicle.customer = request.user
-            vehicle.save()
-            messages.success(request, 'Vehículo creado exitosamente.')
-            return redirect('vehicle')
-        else:
-             messages.error(request, 'Error al registrar vehículo')
+        try:
+            if form_vehicle.is_valid():
+                vehicle = form_vehicle.save(commit=False)
+                vehicle.customer = request.user
+                vehicle.save()
+                messages.success(request, 'Vehículo creado exitosamente.')
+                # messages.success(request, success_message)
+                return redirect('vehicle')
+            else:
+                messages.error(request, 'Error al registrar vehículo')
+                # messages.error(request, error_message)
+        except ValidationError as e:
+            print(e)
     else:
         form_vehicle = VehicleForm()
-        
+
+    
     return render(request, 'register_vehicle.html', {
-        'form': form_vehicle, 
+        'form': form_vehicle,
+        #'success_message': success_message,
+        #'error_message': error_message,
     })
 
 
@@ -371,12 +387,16 @@ def user_type(user):
         return "Customer"
     elif is_recepcionist:
         return "Recepcionist"
+    else:
+        return "AnonymousUser"
 
 def template_base(user_type):
     if user_type == "Customer":
         base_template = 'base_customer.html'
     elif user_type == "Recepcionist":
         base_template = 'base_recepcionist.html'
+    else:
+        base_template = "base.html"
     return base_template
 
 
@@ -558,6 +578,7 @@ def delete_vehicle(request, id):
 def state_vehicle(request, id):
     earn_points = 0
     total_price = 0
+    estimated_total_price = 0
     # vehicles = Vehicle.objects.filter(pk=id, customer=request.user)
     # state_vehicle = Job.objects.filter(job_appointment_vehicle_id=id)
     # state_vehicle = get_object_or_404(Appointment, pk=id, vehicle__customer=request.user)
@@ -565,17 +586,24 @@ def state_vehicle(request, id):
     services = state_vehicle.work_set.all()
     print(services)
     points = Point.objects.get(customer=request.user)
-    for s in services:
-        earn_points += s.service.earn_points
-        print(earn_points)
+    # for s in services:
+    #     if s.
+    #     earn_points += s.service.earn_points
+    #     print(earn_points)
     for service in services:
-        total_price += service.service.price
+        if service.status_service == True:
+            total_price += service.service.price
+            earn_points += service.service.earn_points
+        if service.status_service == False or service.status_service == True:
+            estimated_total_price = service.service.price
+
     error =  'No tiene vehículos'
     return render(request, 'state_vehicle.html',{
         # 'list_vehicle':vehicles,
         'state_vehicle':state_vehicle,
         'services':services,
         'total_price':total_price,
+        'estimated_total_price':estimated_total_price,
         'points':points,
         'earn_points':earn_points,
         'POINTS':POINTS,
@@ -608,7 +636,7 @@ def cancel_appointment(request, id):
         status = VehicleStatus.objects.get(pk=8)
         job = get_object_or_404(Job, appointment=appointment)
         job.status = status
-        job.description_job = "Cancelado"
+        # job.description_job = "Cancelado"
 
         appointment.date_finished = timezone.now()
 
@@ -724,7 +752,7 @@ def list_mechanic(request):
 def register_mechanic(request):
     if request.method == 'POST':
         form_mechanic = MechanicForm(request.POST)
-
+        print(form_mechanic)
         try:
             if form_mechanic.is_valid():
                 form_mechanic.save()
@@ -743,19 +771,21 @@ def register_mechanic(request):
 @login_required
 @recepcionist_required
 def update_mechanic(request, id):
-
     if request.method == 'POST':
         mechanic = get_object_or_404(Mechanic, pk=id)
         form_update = MechanicForm(request.POST, instance=mechanic)
-        print(form_update)
+        print(request.POST)
         try:   
             if form_update.is_valid():
+                print("validado")
                 form_update.save()
                 messages.success(request, 'Mecánico actualizado exitosamente.')
                 return redirect('list_mechanic')
         except:
+            print(form_update.errors)
             messages.error(request, "Error al actualizar mecánico.")
     else:
+        print("el get q shusha")
         mechanic = get_object_or_404(Mechanic, pk=id)
         form_update = MechanicForm(instance=mechanic)
 
@@ -1226,3 +1256,22 @@ def completed_job(request, id):
 
 
 
+@login_required
+@recepcionist_required
+def search_patent(request):
+    patent = request.GET.get('patent')
+    search = None
+    error = "Patente no existe."
+    if patent is not None:
+        vehicle = Vehicle.objects.filter(patent=patent)
+        if vehicle.exists():
+            appointments = Appointment.objects.filter(vehicle_id=vehicle.first())
+            # search = Appointment.objects.filter(vehicle_id=vehicle.first())
+            search = Job.objects.filter(appointment__in=appointments)
+
+    # search = Job.objects.filter(appointment_id=patent)
+    return render(request, 'search_patent.html',{
+        'search' : search,
+        'patent':patent,
+        'error':error
+    })

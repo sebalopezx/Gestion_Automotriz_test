@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 
 # from Management.views import signin
 from Management import views
@@ -69,6 +69,11 @@ urlpatterns = [
     path('list_jobs_completed/', views.list_jobs_completed ,name='list_jobs_completed'),
     path('list_jobs_completed/<int:id>/<str:job_type>/delete/', views.delete_job ,name='delete_job_completed'),
     path('list_service/<int:id_service>/<int:id>/delete/', views.delete_service ,name='delete_service'),
+
+    # path('search/<str:patent>/', views.search_patent, name='search_patent')
+    re_path('search_patent/(?P<patent>[^/]+)?/', views.search_patent, name='search_patent')
+    # (?P<patent>.+)/$
+    #  /(?P<patent>[^/]+)?/
     # path('list_jobs/', views.list_jobs ,name='list_jobs'),
     # path('list_jobs/<int:id>/checklist/', views.job_checklist ,name='checklist'),
     # path('list_jobs/<int:id>/ot/', views.generate_ot ,name='generate_ot'),

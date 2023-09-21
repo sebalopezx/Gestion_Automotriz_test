@@ -5,7 +5,8 @@ register = template.Library()
 
 @register.filter(name='state_display')
 def state_display(value):
-    return "Completo" if value else "Incompleto"
+    return '\u2705' if value else '\u274c'
+    # return 'Completo' if value else "Incompleto"
 
 
 @register.filter(name='coupon_valid')
@@ -55,7 +56,7 @@ def custom_date_format(value):
             'November': 'Noviembre',
             'December': 'Diciembre',
         }
-        formatted_date = value.strftime("%d/%B/%Y a las %H:%M %p")
+        formatted_date = value.strftime("%d de %B del %Y a las %H:%M %p")
 
         # Reemplazar el nombre del mes en inglés por el equivalente en español
         for month_en, month_es in months.items():
@@ -83,7 +84,7 @@ def custom_months_format(value):
             'November': 'Noviembre',
             'December': 'Diciembre',
         }
-        formatted_date = value.strftime("%d/%B/%Y")
+        formatted_date = value.strftime("%d de %B del %Y")
 
         # Reemplazar el nombre del mes en inglés por el equivalente en español
         for month_en, month_es in months.items():

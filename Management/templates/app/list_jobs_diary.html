@@ -6,56 +6,65 @@
 {% endblock header %}
 
 {% block content %}
-    <ul>
-        {% if list_jobs_diary %}
+   
+    {% if list_jobs_diary %}
+        
+        {% for job in list_jobs_diary %}
+        {% if not job.appointment.completed and job.appointment.inprogress %}
 
-            {% for job in list_jobs_diary %}
-            {% if not job.appointment.completed and job.appointment.inprogress %}
-                <li>{{ job }}</li>
-                <li>Estado: {{ job.status }}</li>
-                <li>Detalles del Trabajo: {{ job.description_job }}</li>
-                
-                <button>
+        <article class="jobs row border rounded shadow mb-3 p-1 ps-3">
+            <ul class="list-group mt-2">
+                <li class="list-group-item list-group-item-success">&#127380; Cita: ({{ job.appointment.id }})  &#8470; Orden Trabajo: {{ job.id }}</li>
+                <li class="list-group-item">{{ job }}</li>
+                <li class="list-group-item">Estado: {{ job.status }}</li>
+                <li class="list-group-item">Detalles del Trabajo: {{ job.description_job }}</li>
+            </ul>
+
+            <div class="btn-jobs justify-content-between text-center py-3">
+    
+                <button class="btn btn-info custom-btn mb-2">
                     <a href="{% url 'checklist' job.id %}">
                         CheckList
                     </a>
                 </button>
-                <br>
-                <button>
+                <button class="btn btn-warning custom-btn mb-2">
                     <a href="{% url 'update_job' job.id %}">
-                        Agregar detalles y servicios
+                        Agregar 
                     </a>   
                 </button>
-                <br>     
-                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
+    
+                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST" class="d-inline">
                     {% csrf_token %} 
-                    <button>
+                    <button class="btn btn-danger custom-btn mb-2">
                         Cancelar
                     </button>
                 </form>
-
-                <br> 
-
+            
                 {% if job.status.id == 7 %}
-                <form action="{% url 'completed_job' job.id %}" method="POST"> 
+                <form action="{% url 'completed_job' job.id %}" method="POST" class="d-inline"> 
                     {% csrf_token %} 
-                    <button>
-                        Finalizar trabajo
+                    <button class="btn btn-success custom-btn mb-2">
+                        Finalizar
                     </button>
                 </form>
+            
                 {% else %}
-                <button disabled>
-                    Finalizar trabajo
+                <button class="btn btn-outline-success custom-btn mb-2" disabled>
+                    Finalizar
                 </button>
+        
                 {% endif %}
+            </div>      
 
-            {% endif %}
-            {% endfor %}
-
-        {% else %}
-            {{ error_diary }}
         {% endif %}
-    </ul>  
+        {% endfor %}
+            </ul>
+        </article>
+
+    {% else %}
+        <li class="list-group-item list-group-item-warning">{{ error_diary }}</li>
+    {% endif %}
+   
     
 <ul class="messages">
     {% for message in messages %}

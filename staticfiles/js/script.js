@@ -1,3 +1,49 @@
+// LINK CON CLASE ACTIVE PARA MARCAR POSICION
+
+// Obtenemos la URL actual
+// let currentURL = window.location.href;
+
+// // Obtenemos todos los enlaces de navegación
+// let navLinks = document.querySelectorAll(".nav-link");
+
+// // Iteramos sobre los enlaces
+// for (var i = 0; i < navLinks.length; i++) {
+//     let link = navLinks[i];
+
+//     // Verificamos si el href del enlace coincide con la URL actual
+//     if (link.href === currentURL) {
+//         // Agregamos la clase "active" al enlace
+//         link.classList.add("active");
+//     };
+// };
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     const navLinks = document.querySelectorAll('.nav-link');
+//     console.log(navLinks);
+
+//     navLinks.forEach(function (link) {
+//         link.addEventListener('click', function () {
+//             navLinks.forEach(function (navLink) {
+//                 navLink.classList.remove('active'); // Elimina la clase 'active' de todos los enlaces
+//             });
+//             this.classList.add('active'); // Agrega la clase 'active' al enlace clicado
+//         });
+//     });
+// });
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     const navLinks = document.querySelectorAll('.nav-link');
+//     const currentUrl = "{{ current_url }}"; // Obtén la URL actual de Django
+
+//     navLinks.forEach(function (link) {
+//         const linkUrl = link.getAttribute('href'); // Obtiene la URL del enlace
+
+//         if (currentUrl.startsWith(linkUrl)) {
+//             link.classList.add('active');
+//         }
+//     });
+// });
+
 // Generar OT y Checklist 
 
 // function generateOT(id){

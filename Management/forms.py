@@ -196,8 +196,8 @@ class MechanicForm(CapitalizeField, forms.ModelForm):
         if not re.match(r'^\d{9}$', phone):
             raise forms.ValidationError("El teléfono solo debe contener números y 9 digitos.")
         # Validación para patentes únicas
-        if Mechanic.objects.filter(phone=phone).exists():
-            raise forms.ValidationError("Ya existe ese número de teléfono.")
+        # if Mechanic.objects.filter(phone=phone).exists():
+        #     raise forms.ValidationError("Ya existe ese número de teléfono.")
         return phone
 
 # class JobForm(forms.ModelForm):
@@ -257,12 +257,15 @@ class WorkForm(forms.ModelForm):
 class VehicleStatusForm(forms.ModelForm):
     status = forms.ModelChoiceField(
             queryset=VehicleStatus.objects.all(),  # Esto representa todos los estados de vehículos disponibles
-            widget=forms.Select(attrs={'class': 'form-control'}),
+            widget=forms.Select(),
             label='Estado del vehículo'  # Opcional: Puedes personalizar la etiqueta si lo deseas
         )
     class Meta:
         model = VehicleStatus
         fields = ['status']
+        # widgets = {
+        #     'status': forms.Select(choices=[('',label), queryset])
+        #     }
         # label = {
         #     'status':'Estado'
         # }

@@ -8,10 +8,41 @@
 
     <form method="POST">
         {% csrf_token %}
-        {{ form_mechanic.as_p }}
-        <button>
-            Registrar
-        </button>
+        {% comment %} {{ form_mechanic.as_p }} {% endcomment %}
+
+        <div class="input-group mb-3 justify-content-center">
+            <label for="brand" class="label">
+                <span name="brand" class="form-control bg-light">
+                    {{ form_mechanic.first_name.label_tag }}
+                    {{ form_mechanic.first_name }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <label for="brand" class="label">
+                <span name="brand" class="form-control bg-light">
+                    {{ form_mechanic.last_name.label_tag }}
+                    {{ form_mechanic.last_name }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <label for="brand" class="label">
+                <span name="brand" class="form-control bg-light">
+                    {{ form_mechanic.phone.label_tag }}
+                    {{ form_mechanic.phone }}
+                </span>
+            </label>
+        </div>
+
+        <div class="text-center mx-auto mt-3">
+            <button class="btn btn-success mt-3" type="submit">
+                Registrar
+            </button>
+            <button class="btn btn-primary mt-3" type="button">
+                <a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a>
+            </button>
+        </div>
     </form>
     
     <ul class="messages">
@@ -20,8 +51,5 @@
         {% endfor %}
     </ul>
 
-    <button>
-        <a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a>
-    </button>
     
 {% endblock content %}

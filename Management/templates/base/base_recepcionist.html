@@ -1,68 +1,117 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static  %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Gestion Automotriz</title>
-    {% comment %} <link rel="stylesheet" href="../static/styles/main.css"> {% endcomment %}
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static '../../../static/styles/main.css' %}"> {% endcomment %}
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <!-- BOOTSTRAP -->
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <!-- ICONOS BOOTSTRAP 5 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script src="{% static 'js/script.js' %}"></script>
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
+{% block nav %}
+{% with current_url=request.path %}
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Getión Automotriz</a>
+        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon "></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" 
+                    href="{% url 'index' %}">Inicio</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link {% if '/user_data/' in current_url %}active{% endif %}" 
+                    href="{% url 'user_data' %}">Mis Datos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/register_recepcionist/' in current_url %}active{% endif %}" 
+                    href="{% url 'register_recepcionist' %}">Registrar Recepcionista</a>
+                </li>
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle 
+                    {% if '/list_mechanic/' in current_url or '/register_mechanic/' in current_url %}active{% endif %}" 
+                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mecánicos</a>
+                    <ul class="dropdown-menu bg-dark">
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/list_mechanic/' in current_url %}active{% endif %}" 
+                            href="{% url 'list_mechanic' %}">Listar Mecánicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/register_mechanic/' in current_url %}active{% endif %}" 
+                            href="{% url 'register_mechanic' %}">Registrar Mecánico</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle 
+                    {% if '/list_jobs_pending/' in current_url or '/list_jobs_diary/' in current_url or '/list_jobs_inprogress/' in current_url or '/list_jobs_completed/' in current_url %}active{% endif %}" 
+                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Trabajos</a>
+                    <ul class="dropdown-menu bg-dark">
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/list_jobs_pending/' in current_url %}active{% endif %}" 
+                            href="{% url 'list_jobs_pending' %}">Trabajos Pendientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/list_jobs_diary/' in current_url %}active{% endif %}" 
+                            href="{% url 'list_jobs_diary' %}">Trabajo del Día</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/list_jobs_inprogress/' in current_url %}active{% endif %}" 
+                            href="{% url 'list_jobs_inprogress' %}">Trabajo en Progreso</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/list_jobs_completed/' in current_url %}active{% endif %}" 
+                            href="{% url 'list_jobs_completed' %}">Trabajo Finalizados</a>
+                        </li>
+                    </ul>
+                </li>     
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
 
+
+            <ul class="navbar-nav mb-2 mb-lg-0 mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if '/user_data/' in current_url %}active{% endif %}" 
+                    href="{% url 'user_data' %}">
+                        <span class="badge btn btn-outline-primary">{{ user }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/signout/' in current_url %}active{% endif %}" 
+                    href="{% url 'signout' %}">
+                        <span class="badge btn btn-outline-danger">Cerrar Sesión</span>
+                    </a>
+                </li>
+                {% comment %} {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {% if '/signin/' in current_url %}active{% endif %}" 
+                    href="{% url 'signin' %}">Iniciar Sesión</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/signup/' in current_url %}active{% endif %}" 
+                    href="{% url 'signup' %}">Registrarse</a>
+                </li> {% endcomment %}
+                {% endif %}
+            </ul>          
+        </div>
+    </div>
+</nav>
+{% endwith %}
+
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <form class="search-patent d-flex mx-auto" role="search"
+        method='GET' action="{% url 'search_patent' %}">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Buscar Patente" aria-label="Search" name="patent">
+            <button class="btn btn-outline-success" type="submit">
+                {% comment %} <a href="{% url 'search_patent' %}"> {% endcomment %}
+                    Buscar
+                {% comment %} </a> {% endcomment %}
+            </button>
+        </form>
+    </div>
+</nav>
+
+{% endblock nav %}
+
+    {% comment %} 
     <nav>
         <ul>
             {% if user.is_authenticated %}
@@ -87,20 +136,46 @@
             <li><a href="{% url 'signup' %}">Registrarse</a></li>
             {% endif %}
         </ul>
+    </nav> {% endcomment %}
+
+{% block header %}
+{% endblock header %}
+
+{% block main %}
+<section class="container border rounded shadow p-4 mb-5">
+    {% block content %}
+    {% endblock content %}
+</section>
+{% endblock main %}
+
+{% block footer %}
+{% with current_url=request.path %}
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light p-3 mt-auto">
+        
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav mx-auto">
+                <a class="nav-link {% if '/list_jobs_pending/' in current_url %}active{% endif %}" 
+                href="{% url 'list_jobs_pending' %}">Trabajos Pendientes</a>
+                <a class="nav-link {% if '/list_jobs_diary/' in current_url %}active{% endif %}" 
+                href="{% url 'list_jobs_diary' %}">Trabajos Diarios</a>
+                <a class="nav-link {% if '/list_jobs_inprogress/' in current_url %}active{% endif %}" 
+                href="{% url 'list_jobs_inprogress' %}">Trabajos en Progreso</a>
+                <a class="nav-link {% if '/list_jobs_completed/' in current_url %}active{% endif %}" 
+                href="{% url 'list_jobs_completed' %}">Trabajos Finalizados</a>
+            </div>
+        </div>
+        <div class="btn-up mx-auto">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-circle-up fs-1"></i>
+            </a>
+        </div>
+
     </nav>
+{% endwith %}
+{% endblock footer %}
 
-    {% block header %}{% endblock header %}
 
-    {% block content %}{% endblock content %}
 
-    {% block footer %}
-        <h1 style="color:red;">Footer</h1>
-    {% endblock footer %}
+{% block script %}
 
-    {% comment %} <script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script> {% endcomment %}
-    {% comment %} <script src="{% static '' %}"></script> {% endcomment %}
-    {% block script %}
-
-    {% endblock script %}
-</body>
-</html>
+{% endblock script %}

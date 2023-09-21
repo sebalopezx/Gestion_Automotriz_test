@@ -109,7 +109,7 @@ class VehicleStatus(models.Model):
     status = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.id}. {self.status}"
+        return f"{self.status}"
 
 class Job(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)

@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     'bootstrap5',
 ]
 
+# Configuración personalizada de Bootstrap5
+BOOTSTRAP5 = {
+    'primary_color': '#ff7c38', 
+}
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
     messages.INFO: 'info',

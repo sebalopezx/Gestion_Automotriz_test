@@ -3,28 +3,46 @@
 
 {% block header %}
     <h1>Checklist Vehículo: {{ job.appointment.vehicle }}</h1>
-    <h3>Cita ID: {{ job.id }}</h3>
+    <h3>&#127380; Cita: {{ job.appointment.id }} &#8470; Orden Trabajo: {{ job.id }}</h3>
 {% endblock header %}
 
 {% block content %}
-
+    <h3 class="text-center">Actualizar descripción del trabajo:</h3>
     <form method="POST" id="updateJobForm"> 
         
         {% csrf_token %}
-        {% comment %} {{ form_update.as_p }} {% endcomment %}
-        {{ form_job.as_p }}
-        {{ form_service.as_p }}
-        {% comment %} {{ form_status.as_p }} {% endcomment %}
-        <button type="submit">
-            Guardar
-        </button>
+        {% comment %} {{ form_job.as_p }} {% endcomment %}
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="description_job" class="label">
+                <span name="description_job" class="form-control block-inline align-items-top">
+                    {{ form_job.description_job.label_tag }}
+                    {{ form_job.description_job }}
+                </span>
+            </label>
+        </div>
+
+        <hr>
+
+        <h3 class="text-center">Agregar servicios al trabajo:</h3>
+        {% for service in form_service %}
+        <ul class="list-services-job list-group mx-auto fit-content">
+            <li class="list-group-item">{{ service }}</li>
+        </ul>
+        {% endfor %}
+
+        <div class="text-center mx-auto mt-3">
+            <button class="btn btn-success mt-3" type="submit">
+                Guardar Servicios
+            </button>
+            <button class="btn btn-primary mt-3">
+                <a href="{% url 'list_jobs_inprogress' %}">
+                    Volver a Listado de Trabajos
+                </a>
+            </button>
+        </div>
     </form>
-    <br>
-    <button>
-        <a href="{% url 'list_jobs_inprogress' %}">
-            Volver a Listado de Trabajos
-        </a>
-    </button>
+
+
 
     {% comment %} <script>
         // Espera a que se cargue completamente la página

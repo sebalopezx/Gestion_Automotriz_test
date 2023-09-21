@@ -18,119 +18,285 @@
     {% endif %}
 </ul> {% endcomment %}
 
-{{ state_vehicle }}
-<br>
-OT = {{ state_vehicle.id }}
+
 
 {% if state_vehicle %}
-    <h2>Detalles del Vehículo</h2>
-    <ul>
-        <li>Cliente: {{ state_vehicle.appointment.vehicle.customer }}</li>
-        <li>Marca: {{ state_vehicle.appointment.vehicle.brand }}</li>
-        <li>Modelo: {{ state_vehicle.appointment.vehicle.model }}</li>
-        <li>Año: {{ state_vehicle.appointment.vehicle.year }}</li>
-        {% comment %} <li>Puntos totales: {{ points.points }}</li>
-        <li>AER: {{ state_vehicle.service.name }}</li> {% endcomment %}
-        <li>Fecha de Cita: {{ state_vehicle.appointment.date_register|custom_months_format }} a las {{ state_vehicle.appointment.attention }}</li>
-        <li>ID de Cita: {{ state_vehicle.appointment_id }}</li>
-        <li>
+    <h2 class="text-center">Detalles Generales</h2>
+    <ul class="list-group ">
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Cliente:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.vehicle.customer.first_name }}
+                        {{ state_vehicle.appointment.vehicle.customer.last_name }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Marca:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.vehicle.brand|capfirst }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Modelo:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.vehicle.model|capfirst }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Año:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.vehicle.year }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Fecha de cita:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.date_register|custom_months_format }}
+                         a las {{ state_vehicle.appointment.attention }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">ID de cita:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment_id }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Fecha finalizado:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {% if state_vehicle.appointment.date_finished %} 
+                            {% comment %} {{ state_vehicle.appointment.date_finished|date:"d/F/Y H:i A"|capitalize_month }} {% endcomment %}
+                            {{ state_vehicle.appointment.date_finished|custom_date_format  }}
+                        {% else %} 
+                            En ejecución 
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+      
+        {% comment %} <li class="list-group-item list-group-item-info">Marca: {{ state_vehicle.appointment.vehicle.brand }}</li>
+        <li class="list-group-item list-group-item-info">Modelo: {{ state_vehicle.appointment.vehicle.model }}</li>
+        <li class="list-group-item list-group-item-info">Año: {{ state_vehicle.appointment.vehicle.year }}</li>     
+        <li class="list-group-item list-group-item-info">Fecha de Cita: {{ state_vehicle.appointment.date_register|custom_months_format }} a las {{ state_vehicle.appointment.attention }}</li>
+        <li class="list-group-item list-group-item-info">ID de Cita: {{ state_vehicle.appointment_id }}</li>
+        <li class="list-group-item list-group-item-info">
             Fecha de Finalizado: 
-            {% comment %} {% if state_vehicle.appointment.date_finished %}
-            {{ state_vehicle.appointment.date_finished|date:"d" }} 
-            {{ state_vehicle.appointment.date_finished|date:"F"|capitalize_month }} 
-            {{ state_vehicle.appointment.date_finished|date:"Y H:i A" }}
-            {% else %}
-              En ejecución
-            {% endif %} {% endcomment %}
-
-
             {% if state_vehicle.appointment.date_finished %} 
-                {% comment %} {{ state_vehicle.appointment.date_finished|date:"d/F/Y H:i A"|capitalize_month }} {% endcomment %}
+
                 {{ state_vehicle.appointment.date_finished|custom_date_format  }}
             {% else %} 
                 En ejecución 
             {% endif %} 
         </li>
-    </ul>
+    </ul> {% endcomment %}
 
-    <h2>Detalle Servicios y Presupuesto</h2>
-    <ul>
-        {% for service in services %}
-        <li>{{ service.service.id }}. {{ service.service.name }} {{ service.service.price|format_clp }} - Estado:{{ service.status_service|state_display }}
-        Puntos otorgados: {{ service.service.earn_points }}</li>
-        {% endfor %}
-        <li>Puntos ganados totales: {{ earn_points }}</li>
-    </ul>
-    <br>
-    {% if total_price %}
-    Presupuesto: {{ total_price|format_clp }}
-        {% if points.points >= POINTS %}
+    <h2 class="text-center mt-3">Detalle Servicios y Presupuesto</h2>
+    {% for service in services %}
+    <div class="mt-2 ">
+        <ul class="list-group list-group-horizontal-md justify-content-center text-center ">
+            <li class="list-group-item list-group-item-secondary pt-0 pb-0">N°{{ service.id }}</li>
+            <li class="list-group-item pt-0 pb-0">{{ service.service.name }}</li>
+            <li class="list-group-item pt-0 pb-0">{{ service.service.price|format_clp }}</li>
+            <li class="list-group-item pt-0 pb-0">Estado: {{ service.status_service|state_display }}</li>
+            <li class="list-group-item pt-0 pb-0">Puntos a otorgar: {{ service.service.earn_points }}</li> 
+        </ul>
+    </div>
+    {% endfor %}
+
+<div>
+    <ul class="list-group list-group-horizontal-md justify-content-center text-center mt-3">
+        <li class="list-group-item list-group-item-success ">Puntos totales ganados: {{ earn_points }}</li>
+        <li class="list-group-item list-group-item-info ">Presupuesto Estimado: {{ estimated_total_price|format_clp }}</li>
+        {% if total_price %}
+        <li class="list-group-item list-group-item-warning ">Presupuesto Total: {{ total_price|format_clp }}</li>
+
+        {% comment %} {% if points.points >= POINTS %}
         <button id="btnDiscount" data-total-price="{{ total_price }}">
-            {% comment %} onclick="generate_discount(parseFloat({{ total_price }}))"> {% endcomment %}
             Ver descuento
         </button>
         <p id="discount" class="descuento"></p>
-{% comment %} 
-        <script>
-            function generate_discount(total_price){
-                console.log("ingresando descuento")
-                console.log("Valor total_price:", total_price);
-                const element = document.getElementById('descuento');
-                const discount = 0.90;
-                const discounted_price = total_price*discount
-                const formatted_price = discounted_price.toLocaleString('es-CL', {
-                    style: 'currency',
-                    currency: 'CLP'
-                });
-                console.log("Valor total_price:", formatted_price);
-                
-                element.innerHTML = `Precio con descuento: ${formatted_price} pesos.`;
-                // return total_price*discount
-            };
-        </script> {% endcomment %}
+
         {% else %}
             <button data-total-price="{{ total_price }}" disabled>
                 Ver descuento
             </button>
-        {% endif %}
+        {% endif %}  {% endcomment %}
 
     {% else %}
-    Presupuesto: Sin presupuesto
-    {% endif %}
-
-    <h2>Checklist</h2>
-    <p> {{ state_vehicle.status }}</p>
-    {% comment %} {% if state_vehicle.appointment.completed %}
-    <p> {{ state_vehicle.status }}</p>
-    {% else %}
-    <p>En ejecución</p>
-    {% endif %}  {% endcomment %}
-
-    <p>Descripción: {{ state_vehicle.description_job }}</p>
-    <ul>
-        <li>Cita agendada: {{ state_vehicle.appointment.inprogress|state_display }}</li>
-        {% comment %} <li>Finalizado: {{ state_vehicle.completed|state_display }}</li> {% endcomment %}
-        {% comment %} <li>Estado: {{ state_vehicle.checklist.state|state_display }}</li> {% endcomment %}
-        <li>Luces Delanteras: {{ state_vehicle.checklist.front_lights|state_display }}</li>
-        <li>Luces Traseras: {{ state_vehicle.checklist.rear_lights|state_display }}</li>
-        <li>Chasis: {{ state_vehicle.checklist.chassis|state_display }}</li>
-        <li>Limpieza: {{ state_vehicle.checklist.cleaning|state_display }}</li>
-        <li>Extinguidor: {{ state_vehicle.checklist.extinguisher|state_display }}</li>
-        <li>Kit primeros auxilios: {{ state_vehicle.checklist.first_aid_kit|state_display }}</li>
-        <li>Triángulos: {{ state_vehicle.checklist.triangles|state_display }}</li>
-        <li>Gata hidráulica: {{ state_vehicle.checklist.hydraulic_jack|state_display }}</li>
-        <li>Rueda de repuesto: {{ state_vehicle.checklist.spare_wheel|state_display }}</li>
-       
-
-
-
-
-
-        {% comment %} <li>Estado: {% if state_vehicle.checklist.state %}Completo{% else %}Incompleto{% endif %}</li>
-        <li>Luces Delanteras: {% if state_vehicle.checklist.front_lights %}Sí{% else %}No{% endif %}</li>
-        <li>Luces Traseras: {% if state_vehicle.checklist.rear_lights %}Sí{% else %}No{% endif %}</li> {% endcomment %}
-        <!-- Otros elementos del checklist aquí -->
+        <li class="list-group-item list-group-item-warning">Presupuesto Total: Sin presupuesto</li>
     </ul>
+    {% endif %} 
+    </div>
+    
+    <h2 class="text-center mt-3 mb-2">Checklist</h2>
+    <ul class="list-group ">
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Estado:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.status }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 list-group-item-info ">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Descripción:</label>
+                <div class="col-6 bg-light rounded ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.description_job }}
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <ol class="list-group mt-1">
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row ">
+                <label for="brand" class="col-6 text-end">Cita agendada:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.appointment.inprogress|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Luces delanteras:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.front_lights|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Luces traseras:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.rear_lights|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Chasis:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.chassis|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Limpieza:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.cleaning|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Extinguidor:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.extinguisher|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Kit de primeros auxilios:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.first_aid_kit|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Triángulos:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.triangles|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Gata hidráulica:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.hydraulic_jack|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item col-12 pt-1 pb-1">
+            <div class="row">
+                <label for="brand" class="col-6 text-end">Rueda de repuesto:</label>
+                <div class="col-6 ">
+                    <span name="brand" class="text-start">
+                        {{ state_vehicle.checklist.spare_wheel|state_display }}
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ol>
+
+        {% comment %} <li class="list-group-item">Cita agendada: {{ state_vehicle.appointment.inprogress|state_display }}</li>
+        <li class="list-group-item">Luces Delanteras: {{ state_vehicle.checklist.front_lights|state_display }}</li>
+        <li class="list-group-item">Luces Traseras: {{ state_vehicle.checklist.rear_lights|state_display }}</li>
+        <li class="list-group-item">Chasis: {{ state_vehicle.checklist.chassis|state_display }}</li>
+        <li class="list-group-item">Limpieza: {{ state_vehicle.checklist.cleaning|state_display }}</li>
+        <li class="list-group-item">Extinguidor: {{ state_vehicle.checklist.extinguisher|state_display }}</li>
+        <li class="list-group-item">Kit primeros auxilios: {{ state_vehicle.checklist.first_aid_kit|state_display }}</li>
+        <li class="list-group-item">Triángulos: {{ state_vehicle.checklist.triangles|state_display }}</li>
+        <li class="list-group-item">Gata hidráulica: {{ state_vehicle.checklist.hydraulic_jack|state_display }}</li>
+        <li class="list-group-item">Rueda de repuesto: {{ state_vehicle.checklist.spare_wheel|state_display }}</li> {% endcomment %}
+
+        <!-- Otros elementos del checklist aquí -->
+
 {% else %}
     <p>{{ error }}</p>
 {% endif %}
@@ -138,10 +304,13 @@ OT = {{ state_vehicle.id }}
 {% comment %} {{ state_vehicle }} {% endcomment %}
         
         
-        
-<p>VER CHECKLIST ESTADO VEHICULO - IMPLEMENTAR</p> 
-         
-<a href="{% url 'vehicle' %}">Ver listado Vehículos</a>
+<div class="text-center mt-5">
+    <button class="btn btn-primary">
+        <a href="{% url 'vehicle' %}">Ver listado Vehículos</a>
+    </button>
+</div>
+
+
 {% endblock content %}
 
 {% block script %}

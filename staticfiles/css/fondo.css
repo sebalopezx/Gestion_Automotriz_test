@@ -1,0 +1,23 @@
+body{
+    /* background-image: url("../images/fondo_1024x1024.jpg"); */
+    background: black;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-login-container{
+
+}
+.form-login{
+    background: transparent;
+    backdrop-filter: blur(7px);
+    /* color: whitesmoke; */
+}
+
+.form-login span{
+    /* color: whitesmoke; */
+    background: transparent;
+    text-shadow: whitesmoke 0px 0px 50px;
+}
+

@@ -1,0 +1,42 @@
+.fondo-login{
+    /* height: 75vh; */
+    /* max-height: 75vh; */
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 75vh;
+    max-height: 90vh;
+    background-image: url("../images/fondo_login.jpg") !important;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+.fondo-login2{
+    /* height: 75vh; */
+    /* max-height: 100vh; */
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 90vh; 
+    background-image: url("../images/fondo_login.jpg") !important;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.form-login-container{
+
+}
+.form-login{
+    background: transparent;
+    backdrop-filter: blur(20px);
+    /* color: whitesmoke; */
+}
+
+.form-login span{
+    /* color: whitesmoke; */
+    background: transparent;
+    text-shadow: whitesmoke 0px 0px 50px;
+}

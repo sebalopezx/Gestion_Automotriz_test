@@ -8,14 +8,72 @@
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrar</button>
+        {% comment %} {{ form.as_p }} {% endcomment %}
+
+        {% for f in form %}
+            <div class="input-group mb-3 justify-content-center">
+                <label for="" class="label">
+                    <span name="" class="form-control bg-light">
+                        {{ f.label_tag }}
+                        {{ f }}
+                    </span>
+                </label>
+            </div>
+        {% endfor %}
+        
+        {% comment %} <div class="input-group mb-3 justify-content-center">
+            <label for="brand" class="label">
+                <span name="brand" class="form-control bg-light">
+                    {{ form.brand.label_tag }}
+                    {{ form.brand }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <label for="model" class="label">
+                <span name="model" class="form-control bg-light">
+                    {{ form.model.label_tag }}
+                    {{ form.model }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <label for="patent" class="label">
+                <span name="patent" class="form-control bg-light">
+                    {{ form.patent.label_tag }}
+                    {{ form.patent }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <label for="year" class="label">
+                <span name="year" class="form-control bg-light">
+                    {{ form.year.label_tag }}
+                    {{ form.year }}
+                </span>
+            </label>
+        </div> {% endcomment %}
+
+        <div class="mx-auto text-center">
+            <button class="btn btn-success mt-3" type="submit">
+                Registrar vehículo
+            </button>
+
+            <button class="btn btn-primary mt-3" type="button">
+                <a href="{% url 'vehicle' %}">Volver a lista vehículos</a>
+            </button>
+        </div>
+
+        {% if form.errors.patent %}
+            <div class="alert alert-danger mt-5 pb-0 pt-2">{{ form.errors.patent }}</div>
+        {% endif %}
+
     </form>
     
-    <ul class="messages">
+    {% comment %} <ul class="messages">
         {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
-    </ul>
+    </ul> {% endcomment %}
 
 {% endblock content %}

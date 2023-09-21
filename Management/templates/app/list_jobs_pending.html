@@ -6,43 +6,81 @@
 
 {% block content %}
 
-    <ul>
-        {% if list_appointments %}
+    
+    {% if list_appointments %}
+        {% for date in list_appointments %}
+        {% if not date.inprogress and date.date_finished is None %}
 
-            {% for date in list_appointments %}
-            {% if not date.inprogress and date.date_finished is None %}
-                <li>{{ date.id}}. {{ date }}</li>
+        <article class="jobs row border rounded shadow mb-3 p-1 ps-3">
+            <ul class="list-group mt-2">
+                <li class="list-group-item list-group-item-secondary">&#127380; Cita: {{ date.id  }}</li>
+                <li class="list-group-item">{{ date }}</li>
                 {% if date.description_customer %}
-                <li>Descripción del Cliente: {{ date.description_customer }}</li>
+                <li class="list-group-item">Descripción del Cliente: {{ date.description_customer }}</li>
                 {% else %}
-                <li>Descripción del Cliente: Sin descripción</li>
+                <li class="list-group-item">Descripción del Cliente: Sin descripción</li>
                 {% endif %}
-                <li>{{ date.job.id  }}</li>
+            </ul>
+                {% comment %} <li class="">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">{{ form_job.description_job.label_tag }}</span>
+                        {{ form_job.description_job }}
+                      </div>
+                </li> {% endcomment %}
 
-                <form method="POST" action="{% url 'generate_ot' date.id %}">
-                    {% csrf_token %}
-                    {% comment %} <label for="description">Descripción:</label> {% endcomment %}
-                    {% comment %} <input type="text" name="description" id="description" required> {% endcomment %}
-                    {{ form_job.as_p }}
-                    {{ form_services.as_p }}
-                    <button type="submit">
+
+                {% comment %} <li class="list-group-item">
+                    <div class="input-group mb-3 ">  
+                        <label for="username" class="label w-100">
+                            <span name="username" class="form-control ">
+                                {{ form_job.description_job.label_tag }}
+                                {{ form_job.description_job }}
+                            </span>
+                        </label>
+                    </div>
+                </li>
+            </ul> {% endcomment %}
+            <form method="POST" action="{% url 'generate_ot' date.id %}" class="form-job-pending">
+                {% csrf_token %}
+                {% comment %} <label for="description">Descripción:</label> {% endcomment %}
+                {% comment %} <input type="text" name="description" id="description" required> {% endcomment %}
+                {% comment %} {{ form_services.as_p }} {% endcomment %}
+
+                {% comment %} {{ form_job.as_p }} {% endcomment %}
+                <div class="job-pending input-group">
+                    <span class="input-group-text" id="basic-addon1">{{ form_job.description_job.label_tag }}</span>
+                    {{ form_job.description_job }}
+                </div>
+
+                {% comment %} <div class="input-group mb-3 ">  
+                    <label for="username" class="label w-100">
+                        <span name="username" class="form-control ">
+                            {{ form_job.description_job.label_tag }}
+                            {{ form_job.description_job }}
+                        </span>
+                    </label>
+                </div> {% endcomment %}
+
+                <div class="text-center mx-auto my-2">
+                    <button class="btn btn-success mt-3" type="submit">
                         Generar Trabajo
                     </button>
-                </form>
-                <br>  
-                <form action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST">
-                    {% csrf_token %} 
-                    <button>
-                        Cancelar
-                    </button>
-                </form>
-            {% endif %}
-            {% endfor %}
-
-        {% else %}
-            {{ error }}
+                    <form action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST">
+                        {% csrf_token %} 
+                        <button class="btn btn-danger mt-3">
+                            Cancelar
+                        </button>
+                    </form>
+                </div>
+            </form>
+        </article>
         {% endif %}
-    </ul>
+        {% endfor %}
+
+    {% else %}
+        <li class="list-group-item list-group-item-warning">{{ error }}</li>
+    {% endif %}
+    
 
 
     <ul class="messages">

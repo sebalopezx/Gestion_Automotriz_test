@@ -6,109 +6,64 @@
 {% endblock header %}
 
 {% block content %}
-    {% comment %} <ul>
-        {% if list_jobs_diary %}
 
-            {% for job in list_jobs_diary %}
-            {% if not job.appointment.completed and job.appointment.inprogress %}
-                <li>{{ job }}</li>
-                <li>Estado: {{ job.status }}</li>
-                <li>Detalles del Trabajo: {{ job.description_job }}</li>
+    {% if list_jobs %}
+    
+        {% for job in list_jobs %}
+        {% if not job.appointment.completed and job.appointment.inprogress %}
+
+            <article class="jobs row border rounded shadow mb-3 p-1 ps-3">
+                <ul class="list-group mt-2">
+                    <li class="list-group-item list-group-item-primary">&#127380; Cita: ({{ job.appointment.id }})  &#8470; Orden Trabajo: {{ job.id }}</li>
+                    <li class="list-group-item">{{ job }}</li>
+                    <li class="list-group-item">Estado: {{ job.status }}</li>
+                    <li class="list-group-item">Detalles del Trabajo: {{ job.description_job }}</li>
+                </ul>
                 
-                <button>
-                    <a href="{% url 'checklist' job.id %}">
-                        CheckList
-                    </a>
-                </button>
-                <br>
-                <button>
-                    <a href="{% url 'update_job' job.id %}">
-                        Agregar detalles y servicios
-                    </a>   
-                </button>
-                <br>     
-                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
-                    {% csrf_token %} 
-                    <button>
-                        Cancelar
-                    </button>
-                </form>
+                    <div class="btn-jobs justify-content-between text-center py-3">
+    
+                        <button class="btn btn-info custom-btn mb-2">
+                            <a href="{% url 'checklist' job.id %}">
+                                CheckList
+                            </a>
+                        </button>
+                        <button class="btn btn-warning custom-btn mb-2">
+                            <a href="{% url 'update_job' job.id %}">
+                                Agregar 
+                            </a>   
+                        </button>
+            
+                        <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST" class="d-inline">
+                            {% csrf_token %} 
+                            <button class="btn btn-danger custom-btn mb-2">
+                                Cancelar
+                            </button>
+                        </form>
+                    
+                        {% if job.status.id == 7 %}
+                        <form action="{% url 'completed_job' job.id %}" method="POST" class="d-inline"> 
+                            {% csrf_token %} 
+                            <button class="btn btn-success custom-btn mb-2">
+                                Finalizar
+                            </button>
+                        </form>
+                    
+                        {% else %}
+                        <button class="btn btn-outline-success custom-btn mb-2" disabled>
+                            Finalizar
+                        </button>
+            
+                    {% endif %}
+                </div>      
+            </article>
 
-                <br> 
-
-                {% if job.status.id == 7 %}
-                <form action="{% url 'completed_job' job.id %}" method="POST"> 
-                    {% csrf_token %} 
-                    <button>
-                        Finalizar trabajo
-                    </button>
-                </form>
-                {% else %}
-                <button disabled>
-                    Finalizar trabajo
-                </button>
-                {% endif %}
-
-            {% endif %}
-            {% endfor %}
-
-        {% else %}
-            {{ error_diary }}
         {% endif %}
-    </ul>   {% endcomment %}
+        {% endfor %}
+        
+    {% else %}
+        <li class="list-group-item list-group-item-warning">{{ error }}</li>
+    {% endif %}
 
-
-    {% comment %} <h1>Listado de trabajos en proceso de ejecución</h1> {% endcomment %}
-    <ul>
-        {% if list_jobs %}
-
-            {% for job in list_jobs %}
-            {% if not job.appointment.completed and job.appointment.inprogress %}
-                <li>{{ job }}</li>
-                <li>Estado: {{ job.status }}</li>
-                <li>Detalles del Trabajo: {{ job.description_job }}</li>
-                
-                <button>
-                    <a href="{% url 'checklist' job.id %}">
-                        CheckList
-                    </a>
-                </button>
-                <br>
-                <button>
-                    <a href="{% url 'update_job' job.id %}">
-                        Agregar detalles y servicios
-                    </a>   
-                </button>
-                <br>     
-                <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST">
-                    {% csrf_token %} 
-                    <button>
-                        Cancelar
-                    </button>
-                </form>
-
-                <br> 
-                {% comment %} {% url 'complete_job' job.id %} {% endcomment %}
-                {% if job.status.id == 7 %}
-                <form action="{% url 'completed_job' job.id %}" method="POST"> 
-                    {% csrf_token %} 
-                    <button>
-                        Finalizar trabajo
-                    </button>
-                </form>
-                {% else %}
-                <button disabled>
-                    Finalizar trabajo
-                </button>
-                {% endif %}
-
-            {% endif %}
-            {% endfor %}
-
-        {% else %}
-            {{ error }}
-        {% endif %}
-    </ul> 
 
     <ul class="messages">
         {% for message in messages %}

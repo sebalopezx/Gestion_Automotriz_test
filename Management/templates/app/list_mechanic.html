@@ -1,28 +1,59 @@
 {% extends 'base_recepcionist.html' %}
+{% load static %}
+
+{% block script %}
+
+{% endblock script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navLinks = document.querySelectorAll('.nav-link');
+    
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          navLinks.forEach(function (navLink) {
+            navLink.classList.remove('active'); // Elimina la clase 'active' de todos los enlaces
+          });
+          this.classList.add('active'); // Agrega la clase 'active' al enlace clicado
+        });
+      });
+    });
+</script>
 
 {% block header %}
     <h1>Listado de Mecánicos</h1>
 {% endblock header %}
 
 {% block content %}
-    <ul>
+
+<section class="mechanic-list row">
     {% for mechanic in list_mechanic %}
-        <li>{{ mechanic }}</li>
-        <li>{{ mechanic.phone }}</li>
-        <button>
-            <a href="{% url 'update_mechanic' mechanic.id %}">
-                    Actualizar
-            </a>
-        </button>
-        <br>
-        <form action="{% url 'delete_mechanic' mechanic.id %}" method="POST">
-            {% csrf_token %} 
-            <button>
-                Eliminar
-            </button>
-        </form>
+        <article class="col-12 col-sm-6 col-md-4 col-lg-3 col-md-mb-5 mb-5  ">
+            <div class="card" style="">
+                <img src="{% static "images/foto_personal.jpg" %}" 
+                class="card-img-top w-50 mx-auto" 
+                alt="{{ mechanic.first_name }}{{ mechanic.last_name }}">
+                <div class="card-body bg-light">
+                <h5 class="card-title"><b>{{ mechanic.first_name }} {{ mechanic.last_name }}</b></h5>
+                <p class="card-text"><b>Teléfono: </b>{{ mechanic.phone }}</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>     
+            <div class="text-center m-1">
+                <button class="btn btn-sm btn-warning mx-auto">
+                    <a href="{% url 'update_mechanic' mechanic.id %}">
+                            Actualizar
+                    </a>
+                </button>
+                <form action="{% url 'delete_mechanic' mechanic.id %}" method="POST">
+                    {% csrf_token %} 
+                    <button class="btn btn-sm btn-danger mt-1">
+                        Eliminar
+                    </button>
+                </form>
+            </div>
+        </article>
     {% endfor %}
-    </ul>
+</section>
+
 
         
     <ul class="messages">
@@ -31,8 +62,10 @@
         {% endfor %}
     </ul>
 
-    <button>
-        <a href="{% url 'register_mechanic' %}">Registrar nuevo Mecánico</a>
-    </button>
+    <div class="text-center mx-auto mt-5">
+        <button class="btn btn-primary">
+            <a href="{% url 'register_mechanic' %}">Registrar nuevo Mecánico</a>
+        </button>
+    </div>
     
     {% endblock content %}

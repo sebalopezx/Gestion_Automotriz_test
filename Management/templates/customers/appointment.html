@@ -5,7 +5,6 @@
 {% endblock header %}
 
 {% block content %}
-
 {% comment %} <ul>
     {% for date in list_dates %}
         {% if date %}
@@ -15,34 +14,55 @@
         {% endif %}
     {% endfor %}    
 </ul> {% endcomment %}
-<ul>
+{% comment %} <ol class="list-group list-group-numbered mb-5"> {% endcomment %}
     {% if list_dates %}
         {% for date in list_dates %}
-            <li>{{ date }}</li>
-            <form action="{% url 'cancel_appointment' date.id %}" method="POST">
-                {% csrf_token %}
+        <li class="list-group-item d-flex justify-content-between border mb-3">
+            <div class="row col-12 text-center">
+                {% comment %} {{ date }} {% endcomment %}
+                <div class="col-md-4 col-sm-12">
+                {{ date.vehicle.brand|capfirst }}
+                {{ date.vehicle.model|capfirst }}
+                Patente: {{ date.vehicle.patent }}
+                </div>
+                <div class="col-md-4 col-sm-12">
+                {{ date.date_register }}
+                {{ date.attention }}
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <form action="{% url 'cancel_appointment' date.id %}" method="POST">
+                        {% csrf_token %}
 
-                {% if date.inprogress or date.date_finished is not None %}
-                <button disabled>
-                    Cancelar Cita
-                </button>
-                {% else %}
-                <button>
-                    Cancelar Cita
-                </button>
-                {% endif %}
-            </form>
+                        {% if date.inprogress or date.date_finished is not None %}
+                        <button class="btnCancel btn btn-sm btn-outline-danger" disabled>
+                            Cancelar Cita
+                        </button>
+                        {% else %}
+                        <button class="btnCancel btn btn-sm btn-danger ">
+                            Cancelar Cita
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </li>
         {% endfor %}
+{% comment %} </ol> {% endcomment %}
     {% else %}
-        <li>{{ error }}</li>
+        <p class="list-group-item list-group-item-warning mb-5">{{ error }}</p>
     {% endif %}
-</ul>
 
 
 
- 
-<a href="{% url 'register_date' %}">Registrar nueva Cita</a>
 
+<div class="mx-auto text-center mt-5">
+    <button class="btn btn-primary mt-3">
+        <a href="{% url 'register_date' %}">Registrar nueva Cita</a>
+    </button>
+    <button class="btn btn-primary mt-3">
+        <a href="{% url 'register_vehicle' %}">Registrar nuevo Vehículo</a>
+    </button>
+</div>
 
 
 {% endblock content %}

@@ -1,70 +1,194 @@
 <!DOCTYPE html>
+{% comment %} {% load messages %} {% endcomment %}
 {% load static  %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Gestion Automotriz</title>
-    {% comment %} <link rel="stylesheet" href="../static/styles/main.css"> {% endcomment %}
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static '../../../static/styles/main.css' %}"> {% endcomment %}
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <!-- ICONOS BOOTSTRAP 5 -->
-    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> {% endcomment %}
+     <!-- CSS -->
+     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+     <!-- BOOTSTRAP -->
+     {% load bootstrap5 %}
+     {% bootstrap_css %}
+     {% bootstrap_javascript %}
+     <!-- ICONOS BOOTSTRAP 5 -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {% block css %}
+    {% endblock css %}
 
     <script src="{% static 'js/script.js' %}"></script>
+
+    {% block script %}
+    {% endblock script %}
+    
 </head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'user_data' %}">Mis Datos</a></li>
 
+<body class="bg-light d-flex flex-column min-vh-100">
 
-            <li><a href="{% url 'vehicle' %}">Ver Vehículos</a></li>
-            <li><a href="{% url 'appointment' %}">Ver Citas</a></li>
-            {% comment %} <li><a href="{% url 'points' %}">Ver Puntos</a></li> {% endcomment %}
-            <li><a href="{% url 'register_vehicle' %}">Registrar Vehículo</a></li>
-            <li><a href="{% url 'register_date' %}">Registrar Cita</a></li>
-  
-            <hr>
-
-            <li><a href="">Gestión de Mecánicos</a></li>
-            <li><a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a></li>
-            <li><a href="{% url 'register_mechanic' %}">Registrar Mecánico</a></li>
-            <li><a href="">Gestión de Trabajos</a></li>
-            <li><a href="{% url 'list_jobs_pending' %}">Trabajos Pendientes</a></li>
-            <li><a href="{% url 'list_jobs_diary' %}">Trabajos Del Día</a></li>
-            <li><a href="{% url 'list_jobs_inprogress' %}">Trabajos En Ejecución</a></li>
-            <li><a href="{% url 'list_jobs_completed' %}">Trabajos Finalizados</a></li>
-
-            <hr>
-            <li><a href="{% url 'signout' %}">Desconectarse</a></li>
-            {% else %}
-            <li><a href="{% url 'signin' %}">Iniciar Sesión</a></li>
-            <li><a href="{% url 'signup' %}">Registrarse</a></li>
-            {% endif %}
-        </ul>
+    {% block nav %}
+    {% with current_url=request.path %}
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top mb-5" data-bs-theme="dark">
+        <div class="container-fluid mx-auto">
+            <a class="navbar-brand" href="#">Getión Automotriz</a>
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" 
+                        href="{% url 'index' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/signin/' in current_url %}active{% endif %}" 
+                        href="{% url 'signin' %}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/signup/' in current_url %}active{% endif %}" 
+                        href="{% url 'signup' %}">Registrarse</a>
+                    </li>
+                </ul>      
+            </div>
+        </div>
     </nav>
+    <br>
+    {% endwith %}
+    {% endblock nav %}
 
-    {% block header %}{% endblock header %}
 
-    {% block content %}{% endblock content %}
 
+
+    <section class="title text-primary container text-center my-3 flex-shrink-0">
+        {% block header %}
+        {% endblock header %}
+    </section>
+
+    {% block login %}
+    {% endblock login %}
+
+    {% block main %}
+    {% endblock main %}
+
+    {% block error %}
+
+    {% comment %} {% if messages %}
+    {% for message in messages %} {% endcomment %}
+    <div id="toast-container" aria-live="polite" aria-atomic="true">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message" data-message-class="{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% comment %} <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-message"  class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>  {% endcomment %}
+    </div>
+ 
+    {% comment %} {% endfor %}
+    {% endif %} {% endcomment %}
+
+        {% comment %} <div class="messages toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {% for message in messages %}
+                        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div> {% endcomment %}
+        {% comment %} <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul> {% endcomment %}
+    {% endblock error %}
+
+
+    {% comment %} {% block footer %} {% endcomment %}
     {% block footer %}
-        <h1 style="color:red;">Footer</h1>
+    <footer class="container-fluid bg-dark text-light mt-auto">
+        <div class="container pt-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info-logo">
+                        <h2>Gestión Automotriz</h2>
+                        <p>Te esperamos para que agendes tu cita de mantenimiento con nosotros</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="info-contact">
+                        <h4>Inforomación de Contacto</h4>
+                        <div class="location">
+                            <h6>Información de taller:</h6>
+                            <p class="text-primary">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>Pajaritos, Maipú #999</span>
+                            </p>
+                        </div>
+                        <div class="call">
+                            <h6>Servicio al Cliente:</h6>
+                            <p class="text-primary">
+                                <i class="fa-solid fa-phone-volume"></i>
+                                <span>( +01 1234567890 )</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="about">
+                        <h4>Nosotros</h4>
+                        <ul class="list-unstyled d-flex mt-3 pe-5">
+                            <li class="pe-3">
+                                <a href="https://sebalopezx.github.io/Portafolio/" target="_blank" title="linkedin">
+                                    <i class="fa-solid fa-address-card fs-4"></i>
+                                </a>
+                            </li>
+                            <li class="pe-3">
+                                <a href="https://www.linkedin.com/in/sebastian-lopez-nunez" target="_blank" title="linkedin">
+                                    <i class="fa-brands fa-linkedin-in fs-4"></i>
+                                </a>
+                            </li>
+                            <li class="pe-3">
+                                <a href="https://github.com/sebalopezx" target="_blank" title="github">
+                                    <i class="fa-brands fa-github fs-4"></i>
+                                </a>
+                            </li>
+                            <li class="pe-3">
+                                <a href="https://www.facebook.com/sebalopezxd/" target="_blank" title="facebook">
+                                    <i class="fa-brands fa-facebook-f fs-4"></i>
+                                </a>
+                            </li>
+                            <li class="pe-3">
+                                <a href="https://www.instagram.com/sebalopzxd/" target="_blank" title="instagram">
+                                    <i class="fa-brands fa-instagram fs-4"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     {% endblock footer %}
 
-    {% comment %} <script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script> {% endcomment %}
-    {% comment %} <script src="{% static '' %}"></script> {% endcomment %}
-    {% block script %}
 
-    {% endblock script %}
+
+   
 </body>
 </html>

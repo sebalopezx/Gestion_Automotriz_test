@@ -5,28 +5,33 @@
 {% endblock header %}
 
 {% block content %}
-<ul>
+
     {% if list_jobs %}
 
         {% for job in list_jobs %}
         {% if job.appointment.completed or job.status.id == 8 %}
-            <li>{{ job }}</li>
-            <li>Detalles: {{ job.description_job }}</li>
-            <li>Estado: {{ job.status }}</li>        
-            <form action="{% url 'delete_job_completed' job.appointment.id 'completed' %}" method="POST">
-                {% csrf_token %} 
-                <button>
-                    Eliminar
-                </button>
-            </form>
-
+            <article class="jobs row border rounded shadow mb-3 p-1 ps-3">
+                <ul class="list-group mt-2">
+                    <li class="list-group-item list-group-item-danger">&#127380; Cita: ({{ job.appointment.id }})  &#8470; Orden Trabajo: {{ job.id }}</li>
+                    <li class="list-group-item">{{ job }}</li>
+                    <li class="list-group-item">Detalles: {{ job.description_job }}</li>
+                    <li class="list-group-item">Estado: {{ job.status }}</li>        
+                </ul>
+                <div class="text-center mx-auto mt-3">
+                    <form action="{% url 'delete_job_completed' job.appointment.id 'completed' %}" method="POST">
+                        {% csrf_token %} 
+                        <button class="btn btn-danger">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+            </article>
         {% endif %}
         {% endfor %}
         
     {% else %}
-        {{ error }}
+        <li class="list-group-item list-group-item-warning">{{ error }}</li>
     {% endif %}
-</ul> 
 
     <ul class="messages">
         {% for message in messages %}

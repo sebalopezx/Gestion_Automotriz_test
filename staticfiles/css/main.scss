@@ -1,0 +1,296 @@
+$color-primary: #ff7c38;
+$border-primary: red;
+// @import url("~boostrap/scss/_variables");
+// $primary: $color-primary;
+// @import url("~bootstrap/scss/bootstrap");
+
+@font-face {
+    font-family: fuentePrincipal;
+    src: url(../fonts/Comfortaa-Bold.ttf) format('ttf');
+}
+
+@mixin main-font {
+    font-family: 'Confortaa-Regular.ttf','Roboto', sans-serif !important;
+}
+
+@mixin secondary-font {
+    font-family: "Poppins", sans-serif;
+}
+
+h1{
+    font-family: main-font;
+
+    // text-shadow: $color-primary 2px -2px 4px ;
+    // color: $color-primary;
+}
+button{
+    color: whitesmoke;
+}
+button:hover{
+    transition: .5s;
+    // color: $color-primary !important;
+}
+a:hover{
+    transition: .5s;
+    // color: $color-primary !important;
+}
+
+
+.navbar .navbar-nav .nav-link:hover {
+    transition: .5s;
+    text-shadow: lighten($color: $color-primary, $amount: 10) 0px 0px 5px;
+    // text-decoration: underline;
+    // color: lighten($color: $color-primary, $amount: 5) !important; 
+    // color: darken($color: $color-primary, $amount: 20) !important;
+}
+.navbar .navbar-nav .nav-link.active {
+    // color: $color-primary !important; 
+}
+// body{
+//     @include main-font;
+//     background: red;
+// }
+
+
+.user-data{
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+
+.container-coupon{
+    background-color: #dedede;
+}
+.coupon .coupon-line {
+    border-left: 1px dashed #ddd;
+    width: 40% !important;
+    position:relative;
+}
+
+.coupon .coupon-line .info::after, .coupon .coupon-line .info::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #dedede;
+    border-radius: 100%;
+}
+.coupon .coupon-line .info::before {
+    top: -10px;
+    left: -10px;
+}
+.coupon .coupon-line .info::after {
+    bottom: -10px;
+    left: -10px;
+}
+@media (max-width: 768px) {
+    .container-coupon{
+        // box-sizing: content-box;
+    }
+    .coupon .icon-coupon{
+        
+    }
+    .coupon h4{
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    .coupon p{
+        font-size: 0.9rem;
+    }
+    .coupon .coupon-line{
+        // box-sizing: none ;
+    }
+}
+
+button a{
+    text-decoration: none;
+    color: whitesmoke;
+}
+form a{
+    text-decoration: none;
+}
+
+form .form-login{
+    max-width: 460px;
+}
+form{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+form .input-group{
+    // max-width: 1200px !important;
+}
+form .label{
+    // width: 600px;
+    width: 600px;
+    max-width: 1200px;
+    text-align: right;
+    display: inline-block;
+    margin-right: 10px;
+    // padding-right: 10px;
+}
+// form .label{
+
+//     align-content: center;
+//     align-items: center;
+// }
+// form input,select{
+//     width: 50%;
+//     display: inline-block;
+//     margin-left: 10px;
+//     padding-left: 10px;
+// }
+
+
+// .list-group .list-group-item .label{
+//     // width: 100%;
+//     text-align: right;
+//     display: inline-block;
+//     padding-right: 10px;
+// }
+// .list-group .list-group-item span{
+//     text-align: left;
+//     width: 50%;
+//     // display: inline-block;
+//     margin-left: 10px;
+//     padding-left: 10px;
+// }
+
+div.input-group input,
+div.input-group select {
+    width: 50%;
+    display: inline-block;
+    margin-left: 10px;
+    padding-left: 10px;
+}
+form select{
+    height: 30px;
+}
+// form select option:hover{
+//     background-color: greenyellow;
+//     color: red;
+// }
+form textarea{
+    width: 50%;
+    height: 60px;
+    // resize: none;
+    overflow: hidden;
+}
+form input[type="text"][disabled]{
+    width: 50% !important;
+    display: inline-block !important;
+}
+
+@media (max-width: 1024px) {
+    form.search-patent input{
+        // max-height: 40px;
+        height: 40px;
+        margin-top: 23px;
+    }
+    form .form-login{
+        max-width: 250px;
+        // margin-top: 100%;
+        // margin-bottom: 100%;
+    }
+    // form .form-login-container{
+    //     max-width: 2500px;
+    // }
+    form{
+        max-width: 100%;
+        // width: 100%;
+    }
+    form .input-group{
+        // margin-top: 5px;
+        // margin-bottom: 100px;
+        // max-width: 5000px !important;
+    }
+    form .label{
+        // width: 600px;
+        width: 100%;
+        text-align: center;
+        
+        // display: block;
+        // height: 50px;
+        // margin-bottom: -15px;
+    }
+    div.input-group input,
+    div.input-group select{
+        width: 100%;
+        display: inline-block;
+        margin-left: 0;
+        padding-left: 0;
+    }
+    form textarea{
+        width: 100%;
+        height: 60px;
+        // resize: none;
+        overflow: hidden;
+    }
+    // form button{
+    //     margin-top: 25px;
+    // }
+    // form .btnCancel{
+    //     margin-top: 0;
+    // }
+    // form textarea{
+    //     height: 25px;
+    // }
+}
+// .coupon .time {
+//     font-size: 1.6rem;
+// }
+
+
+// FOOTER
+// footer a{
+//     color: whitesmoke;
+// }
+// footer h4{
+//     text-transform: uppercase;
+//     font-weight: bold;
+// }
+// footer ul{
+//     display: flex;
+//     list-style: none;
+//     // width: 535px;
+// }
+// footer ul li{
+//     margin-left: 0;
+// }
+// footer ul li a{
+//     // font-family: "fuentePrincipal"; 
+//     text-align: none;
+//     color: $color-primary;
+//     margin: 0 15px;
+//     padding: 3px;
+//     transition: 0.5s;
+//     text-decoration: none;
+// }
+
+// MECANICOS
+.mechanic-list article{
+    height: 350px;
+}
+.mechanic-list article .card .card-title{
+    height: 50px;
+    overflow: hidden;
+}
+.mechanic-list article .card{
+    // height: 100%;
+}
+
+.jobs .btn-jobs .custom-btn{
+    width: 110px;
+}
+
+.jobs .form-job-pending {
+    padding-left: 0;
+    width: 100%;
+}
+.jobs .form-job-pending .job-pending textarea{
+    width: 100%;
+  
+}
+.list-services-job{
+    width: fit-content;
+}

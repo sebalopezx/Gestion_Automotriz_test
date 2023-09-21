@@ -1,19 +1,90 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block header %}
-    <h1>Registrarse</h1>
-{% endblock header %}
 
-{% block content %}
 
-<form action="" method="POST">
-    {% csrf_token %}
-    {{form_register.as_p}}
-    <button>
-        Registrarse
-    </button>
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/fondo.css" %}">
+{% endblock css %}
+
+
+{% block login %}
+<div class="fondo-login2">
+
+<div class="mx-auto my-auto mb-5">
+<form action="" method="POST" class="form-login-container justify-content-center mt-5 flex-shrink-0">
+    <div class="form-login pt-4 ps-2 mx-auto border border-primary rounded">
+        <h1 class="text-center mb-3">Formulario de registro</h1>
+        {% csrf_token %}
+        {% comment %} {{form_register.as_p}} {% endcomment %}
+
+        <div class="input-group mb-3 justify-content-center">
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.username.label_tag }}
+                    {{ form_register.username }}
+                </span>
+            </label>
+        </div>
+        <ul class="info-password list-group mb-3 p-3 mx-auto">
+            <li class="list-group-item list-group-item-info text-center">Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+            <li class="list-group-item list-group-item-info text-center">Su contraseña debe contener al menos 8 caracteres.</li>
+            <li class="list-group-item list-group-item-info text-center">Su contraseña no puede ser una clave utilizada comúnmente.</li>
+            <li class="list-group-item list-group-item-info text-center">Su contraseña no puede ser completamente numérica</li>
+        </ul>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.password1.label_tag }}
+                    {{ form_register.password1 }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.password2.label_tag }}
+                    {{ form_register.password2 }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.first_name.label_tag }}
+                    {{ form_register.first_name }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.last_name.label_tag }}
+                    {{ form_register.last_name }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_register.email.label_tag }}
+                    {{ form_register.email }}
+                </span>
+            </label>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-primary mb-3">
+                Registrarse
+            </button>
+            <p>Ya tienes cuenta, <a href="{% url "signin" %}">Iniciar Sesión</a></p>
+        </div>
+
+    </div>
 </form>
+</div>
 {{error}}
 
-{% endblock content %}
+</div>
+{% endblock login %}
 

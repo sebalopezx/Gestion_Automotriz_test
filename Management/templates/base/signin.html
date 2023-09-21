@@ -1,18 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block header %}
-    <h1>Iniciar Sesión</h1>
-{% endblock header %}
 
-{% block content %}
 
-<form action="" method="POST">
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/fondo.css" %}">
+{% endblock css %}
+    
+{% block login %}
+<div class="fondo-login">
+
+<div class="mx-auto my-auto mb-5">
+<form action="" method="POST" class="form-login-container justify-content-center mt-5 flex-shrink-0">
+    
     {% csrf_token %}
-    {{form_login.as_p}}
-    <button>
-        Iniciar Sesión
-    </button>
+    {% comment %} {{form_login.as_p}} {% endcomment %}
+    <div class="form-login pt-4 ps-2 mx-auto border border-primary rounded">
+        <h1 class="text-center mb-3">Login</h1>
+
+        <div class="input-group mb-3 justify-content-center">
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_login.username.label_tag }}
+                    {{ form_login.username }}
+                </span>
+            </label>
+        </div>
+        <div class="input-group mb-3 justify-content-center">  
+            <label for="username" class="label">
+                <span name="username" class="form-control border-0">
+                    {{ form_login.password.label_tag }}
+                    {{ form_login.password }}
+                </span>
+            </label>
+        </div>
+        <div class="text-center mt-3 mb-2">
+            <button class="btn btn-primary mb-3">
+                Iniciar Sesión
+            </button>
+            <br>
+            <span>No tienes cuenta, <a href="{% url "signup" %}">Registrate</a></span>
+        </div>
+    </div> 
+
+    {% comment %} <div class="form-login  m-5 p-5 mx-auto border border-primary rounded">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="username">{{ form_login.username.label_tag }}</label>
+                {{ form_login.username }}
+            </div>
+            <div class="col-12 mb-3">
+                <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-login  m-5 p-5 mx-auto border border-primary rounded ">
+
+        <div class="form-floating mb-3">
+            <input type="input" class="form-control" name="{{ form_login.username }}" id="{{ form_login.username }}" placeholder="">
+            <label for="{{ form_login.username }}">{{ form_login.username.label_tag }}</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">{{ form_login.password.label_tag }}</label>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-primary mb-3">
+                Iniciar Sesión
+            </button>
+            <p>No tienes cuenta, <a href="{% url "signup" %}">Registrate</a></p>
+        </div>
+    </div>  {% endcomment %}
+
 </form>
+</div>
 {{error}}
 
-{% endblock content %}
+
+</div>
+{% endblock login %}
+
