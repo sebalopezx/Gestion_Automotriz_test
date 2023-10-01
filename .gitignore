@@ -1,6 +1,6 @@
 venv
 __pychache__
-
+db.sqlite3
 discount.js3.
 config_Django.txt
 modelo.PNG
