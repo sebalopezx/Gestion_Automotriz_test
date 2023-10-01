@@ -6,50 +6,34 @@
 
 {% block content %}
 
-    <form method="POST">
+    <form method="POST" class="confirm-form" enctype="multipart/form-data">
         {% csrf_token %}
-        {% comment %} {{ form_mechanic.as_p }} {% endcomment %}
+        
+        {% for f in form_mechanic %}
+            <div class="input-group mb-3 justify-content-center">
+                <div class="label">
+                    <span class="form-control bg-light">
+                        {{ f.label_tag }}
+                        {{ f }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
 
-        <div class="input-group mb-3 justify-content-center">
-            <label for="brand" class="label">
-                <span name="brand" class="form-control bg-light">
-                    {{ form_mechanic.first_name.label_tag }}
-                    {{ form_mechanic.first_name }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="brand" class="label">
-                <span name="brand" class="form-control bg-light">
-                    {{ form_mechanic.last_name.label_tag }}
-                    {{ form_mechanic.last_name }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="brand" class="label">
-                <span name="brand" class="form-control bg-light">
-                    {{ form_mechanic.phone.label_tag }}
-                    {{ form_mechanic.phone }}
-                </span>
-            </label>
-        </div>
 
         <div class="text-center mx-auto mt-3">
-            <button class="btn btn-success mt-3" type="submit">
+            <button class="btn btn-success mt-3 confirm-button" data-action="confirm" type="submit">
                 Registrar
             </button>
-            <button class="btn btn-primary mt-3" type="button">
-                <a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a>
-            </button>
+            
+            <a class="btn btn-primary mt-3" href="{% url 'list_mechanic' %}">
+                Mecánicos
+            </a>
         </div>
     </form>
     
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-
+    {% if error %}
+        <li class="alert alert-danger mt-5 pb-0 pt-2">{{ error }}</li>
+    {% endif %}
     
 {% endblock content %}

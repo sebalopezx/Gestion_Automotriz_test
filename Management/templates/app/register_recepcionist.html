@@ -6,66 +6,29 @@
 
 {% block content %}
 
-<form action="" method="POST">
+<form action="" method="POST" class="confirm-form">
     {% csrf_token %}
-    {% comment %} {{form_register.as_p}} {% endcomment %}
     
+    {% for f in form_register %}
     <div class="input-group mb-3 justify-content-center">
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.username.label_tag }}
-                {{ form_register.username }}
+        <div class="label">
+            <span class="form-control ">
+                {{ f.label_tag }}
+                {{ f }}
             </span>
-        </label>
+        </div>
     </div>
+    {% endfor %}
+    
     <ul class="info-password list-group mb-3 p-3 mx-auto">
-        <li class="list-group-item list-group-item-info text-center">Su contraseña no puede asemejarse tanto a su otra información personal.</li>
-        <li class="list-group-item list-group-item-info text-center">Su contraseña debe contener al menos 8 caracteres.</li>
-        <li class="list-group-item list-group-item-info text-center">Su contraseña no puede ser una clave utilizada comúnmente.</li>
-        <li class="list-group-item list-group-item-info text-center">Su contraseña no puede ser completamente numérica</li>
+        <li class="list-group-item list-group-item-info text-center">La contraseña no puede asemejarse tanto a su otra información personal.</li>
+        <li class="list-group-item list-group-item-info text-center">La contraseña debe contener al menos 8 caracteres.</li>
+        <li class="list-group-item list-group-item-info text-center">La contraseña no puede ser una clave utilizada comúnmente.</li>
+        <li class="list-group-item list-group-item-info text-center">La contraseña no puede ser completamente numérica</li>
     </ul>
-    <div class="input-group mb-3 justify-content-center">  
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.password1.label_tag }}
-                {{ form_register.password1 }}
-            </span>
-        </label>
-    </div>
-    <div class="input-group mb-3 justify-content-center">  
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.password2.label_tag }}
-                {{ form_register.password2 }}
-            </span>
-        </label>
-    </div>
-    <div class="input-group mb-3 justify-content-center">  
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.first_name.label_tag }}
-                {{ form_register.first_name }}
-            </span>
-        </label>
-    </div>
-    <div class="input-group mb-3 justify-content-center">  
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.last_name.label_tag }}
-                {{ form_register.last_name }}
-            </span>
-        </label>
-    </div>
-    <div class="input-group mb-3 justify-content-center">  
-        <label for="username" class="label">
-            <span name="username" class="form-control ">
-                {{ form_register.email.label_tag }}
-                {{ form_register.email }}
-            </span>
-        </label>
-    </div>
+
     <div class="text-center mx-auto mt-3">
-        <button class="btn btn-success mb-3">
+        <button class="btn btn-success mb-3 confirm-button" data-action="confirm">
             Registrar
         </button>
     </div>

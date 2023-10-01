@@ -6,66 +6,32 @@
 
 {% block content %}
 
-<form action="" method="POST" class="justify-content-center">
+<form action="" method="POST" class="confirm-form">
     {% if form_update %}
 
         {% csrf_token %}
         
-        {% comment %} {{ form_update.as_p }} {% endcomment %}
-        {% comment %} <div class="row input-group mb-3 justify-content-center">
-            <div class="col-md-6 ">
-                <label for="a" class="w-100">
-                    <span name="a" class="form-control bg-light">
-                        {{ form_update.username.label_tag }}
-                        {{ form_update.username }}
+        {% for f in form_update %}
+            <div class="input-group mb-3 justify-content-center">
+                <div class="label">
+                    <span class="form-control bg-light">
+                        {{ f.label_tag }}
+                        {{ f }}
                     </span>
-                </label>
+                </div>
             </div>
-        </div> {% endcomment %}
+        {% endfor %}
 
 
-        <div class="input-group mb-3 justify-content-center">
-            <label for="username" class="label">
-                <span name="username" class="form-control bg-light">
-                    {{ form_update.username.label_tag }}
-                    {{ form_update.username }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="first_name" class="label">
-                <span name="first_name" class="form-control bg-light ">
-                    {{ form_update.first_name.label_tag }}
-                    {{ form_update.first_name }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="last_name" class="label">
-                <span name="last_name" class="form-control bg-light ">
-                    {{ form_update.last_name.label_tag }}
-                    {{ form_update.last_name }}
-                </span>
-            </label>
-        </div>
-
-        <div class="input-group mb-3 justify-content-center">
-            <label for="email" class="label">
-                <span name="email" class="form-control bg-light ">
-                    {{ form_update.email.label_tag }}
-                    {{ form_update.email }}
-                </span>
-            </label>
-        </div>
 
         <div class="mx-auto text-center">
-            <button class="btn btn-success mt-3" type="submit">
+            <button class="btn btn-success mt-3 confirm-button" data-action="confirm" type="submit">
                 Modificar datos
             </button>
 
-            <button class="btn btn-primary mt-3" type="button">
-                <a href="{% url 'user_data' %}">Volver a mis datos</a>
-            </button>
+            <a class="btn btn-primary mt-3" href="{% url 'user_data' %}">
+                Volver a mis datos
+            </a>
         </div>
         
 

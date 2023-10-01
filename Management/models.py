@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms import CheckboxInput, DateField, DateTimeField, TimeField
 
 import string
@@ -7,21 +7,17 @@ import secrets
 
 # Validadores
 from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
-# Creación de grupos
-from django.contrib.auth.models import Group
+
 
 # Create your groups here.
 # Crear el grupo de clientes
-group_customer, created = Group.objects.get_or_create(name='Customer')
+# group_customer, created = Group.objects.get_or_create(name='Customer')
 # Crear el grupo de recepcionistas
-group_recepcionist, created = Group.objects.get_or_create(name='Recepcionist')
+# group_recepcionist, created = Group.objects.get_or_create(name='Recepcionist')
 
 
 # Create your models here.
 
-# class User(User):
-#     def __str__(self):
-#         return self.username, self.password, self.email
 
 class Vehicle(models.Model):
     customer = models.ForeignKey(User,
@@ -45,25 +41,25 @@ class Workshop(models.Model):
         return f"{self.name}. {self.address} # {self.num_addres}"
 
 class Mechanic(models.Model):
+    SPECIALTY_CHOICES = (
+        ('Mecánico', 'Mecánico'),
+        ('Eléctrico', 'Eléctrico'),
+    )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    # phone = models.IntegerField()
     phone = models.CharField(max_length=9,
                              validators=[
-                                 MaxLengthValidator(limit_value=9)
-                             ]) # cambiar a phone number
-    # employee = models.ForeignKey(User, 
-    #                              on_delete=models.CASCADE,
-    #                              null=False,
-    #                              blank=False)
+                                MaxLengthValidator(limit_value=9)
+                             ])
+    specialty = models.CharField(max_length=50, choices=SPECIALTY_CHOICES, blank=True)
+    image = models.ImageField(upload_to='mechanics/', default="mechanics/foto_personal.jpg")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 class Attention(models.Model):
     attention = models.TimeField()
-    # day = DateField()
-    # date = DateTimeField()
     def formatted_attention(self):
         if self.attention.hour == 8:
             context = ('AM')
@@ -75,7 +71,6 @@ class Attention(models.Model):
         return f"{self.formatted_attention()}"
 
 class Appointment(models.Model):
-    # VER SI DEJAR COMO CASCADA O UN ATRIBUTO BOOLEANO PARA CONTROLAR LA ELIMINACION MIENTRAS SE TRABAJA
     vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True)
     attention = models.ForeignKey(Attention, on_delete=models.CASCADE)
     date_register = models.DateField()
@@ -86,12 +81,9 @@ class Appointment(models.Model):
     description_customer = models.TextField(null=True, blank=True)
     inprogress = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
-    
-    # def get_state_display(self):
-    #     return "Completo" if self.state else "Incompleto"
 
     def __str__(self):
-        return f"Cita para vehículo: {self.vehicle} __  Fecha de la Cita: {self.date_register.strftime('%d-%m-%Y')} {self.attention}"  
+        return f"Cita para vehículo: {self.vehicle} ~> Fecha de la Cita: {self.date_register.strftime('%d-%m-%Y')} {self.attention}"  
 
 class Service(models.Model):
     name = models.CharField(max_length=100)
@@ -115,14 +107,8 @@ class Job(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     description_job = models.TextField(null=True, blank=True)
     status = models.ForeignKey(VehicleStatus, on_delete=models.CASCADE)
-    # service = models.ManyToManyField(Service,  through='Work') # related_name='works', unique=False)
-    # checklist = models.OneToOneField(Checklist, on_delete=models.CASCADE)
 
     def __str__(self):
-        # if self.description_job == None:
-        #     self.description_job = "Sin descripción"
-        #     return f"({self.id}) {self.appointment} {self.description_job}"
-        # else:
         return f"{self.appointment}"
 
 class Work(models.Model):
@@ -158,12 +144,11 @@ class Coupon(models.Model):
     def generate_coupon_code():
         # Generar un código de cupón único
         alphabet = string.ascii_letters + string.digits
-        coupon = ''.join(secrets.choice(alphabet) for i in range(12))  # Puedes ajustar la longitud del código
+        coupon = ''.join(secrets.choice(alphabet) for i in range(8))  # Ajustar la longitud del cupon
         return coupon
 
 class Checklist(models.Model):
     job = models.OneToOneField(Job, on_delete=models.CASCADE)
-    # state = models.BooleanField(default=False)
     front_lights = models.BooleanField(default=False)
     rear_lights = models.BooleanField(default=False)
     chassis = models.BooleanField(default=False)

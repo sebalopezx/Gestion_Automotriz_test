@@ -6,51 +6,29 @@
 
 {% block content %}
 
-    <form method="POST">
+    <form method="POST" class="confirm-form" enctype="multipart/form-data">
         {% csrf_token %}
-        {% comment %} {{ form_update }} {% endcomment %}
         
-        <div class="input-group mb-3 justify-content-center">
-            <label for="first-name" class="label">
-                <span name="first-name" class="form-control bg-light">
-                    {{ form_update.first_name.label_tag }}
-                    {{ form_update.first_name }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="last-name" class="label">
-                <span name="last-name" class="form-control bg-light">
-                    {{ form_update.last_name.label_tag }}
-                    {{ form_update.last_name }}
-                </span>
-            </label>
-        </div>
-        <div class="input-group mb-3 justify-content-center">
-            <label for="phone" class="label">
-                <span name="phone" class="form-control bg-light">
-                    {{ form_update.phone.label_tag }}
-                    {{ form_update.phone }}
-                </span>
-            </label>
-        </div>
+        {% for f in form_update %}
+            <div class="forms-mechanics input-group mb-3 justify-content-center">
+                <div class="label">
+                    <span class="form-control bg-light">
+                        {{ f.label_tag }}
+                        {{ f }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}     
 
         <div class="text-center mx-auto mt-3">
-            <button class="btn btn-warning mt-3" type="submit">
+            <button class="btn btn-warning mt-3 confirm-button" data-action="confirm" type="submit">
                 Actualizar
             </button>
-            <button class="btn btn-primary mt-3" type="button">
-                <a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a>
-            </button>
+            <a class="btn btn-primary mt-3" href="{% url 'list_mechanic' %}">
+                Mecánicos
+            </a>
         </div>
     </form>
-    
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
 
-    
     
 {% endblock content %}

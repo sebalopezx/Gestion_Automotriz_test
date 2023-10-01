@@ -1,9 +1,13 @@
 {% extends 'base_recepcionist.html' %}
 {% load static %}
 
+{% block script %}
+    <script src={% static 'js/update_checklist.js' %}></script>
+{% endblock script %}
+
 {% block header %}
     <h1>Checklist Vehículo: {{ checklist.job.appointment.vehicle }}</h1>
-    <h3>&#127380; Cita: {{ checklist.job.appointment.id }} &#8470; Orden Trabajo: {{ checklist.id }}</h3>
+    <h3 class="text-dark">&#127380; Cita: {{ checklist.job.appointment.id }} &#8470; Orden Trabajo: {{ checklist.id }}</h3>
 {% endblock header %}
 
 {% block content %}
@@ -27,7 +31,7 @@
 
         <hr>
 
-        <h3 class="text-center">Checklist:</h3>
+        <h3 class="text-center">~Checklist~</h3>
         <div class="text-center justify-content-center">
             {% for fch in form_checklist %}
                 <ul class="list-group list-group-horizontal-md">
@@ -39,7 +43,7 @@
 
         <hr>
 
-        <h3 class="text-center">Servicios:</h3>
+        <h3 class="text-center">~Servicios~</h3>
         <div class="text-center justify-content-center ">
             {% for service in list_services %}
                 <ul class="list-group list-group-horizontal-md">
@@ -51,9 +55,9 @@
                         {% if service.status_service %}checked{% endif %}>
                     </li>
                     <li class="list-group-item label m-0">
-                        <form action="{% url 'delete_service' service.pk checklist.id %}" method="POST">
+                        <form action="{% url 'delete_service' service.pk checklist.id %}" method="POST" class="confirm-form">
                             {% csrf_token %} 
-                            <button class="btn btn-sm btn-danger">
+                            <button class="btn btn-sm btn-danger confirm-button" data-action="delete">
                                 Eliminar Servicio
                             </button>
                         </form>
@@ -62,14 +66,14 @@
             {% endfor %}
 
             <div class="text-center mx-auto mt-3">
-                <button class="btn btn-success mt-3" id="btn_update_checklist" type="button">
+                <button class="btn btn-success mt-3" id="btn_update_checklist" type="submit">
                     Guardar Servicios
                 </button>
-                <button class="btn btn-primary mt-3">
-                    <a href="{% url 'list_jobs_inprogress' %}">
-                        Volver a Listado de Trabajos
-                    </a>
-                </button>
+
+                <a class="btn btn-primary mt-3" href="{% url 'list_jobs_inprogress' %}">
+                    Volver a Listado de Trabajos
+                </a>
+
             </div>
         </div>
     </form>
@@ -80,17 +84,10 @@
     action="{% url 'update_job' checklist.id %}"
 {% endcomment %}
 
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
 
 {% endblock content %}
 
-{% block script %}
-    <script src={% static 'js/update_checklist.js' %}></script>
-{% endblock script %}
+
 {% comment %} <script>
     
 document.addEventListener('DOMContentLoaded', function() {

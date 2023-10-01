@@ -1,19 +1,31 @@
 {% extends 'base_recepcionist.html' %}
+{% load static %}
 
 {% block header %}
     <h1>Listado de Citas Pendientes</h1>
 {% endblock header %}
 
+{% block script %}
+    <script src={% static 'js/update_job.js' %}></script>
+{% endblock script %}
+
 {% block content %}
 
-    
     {% if list_appointments %}
         {% for date in list_appointments %}
         {% if not date.inprogress and date.date_finished is None %}
 
         <article class="jobs row border rounded shadow mb-3 p-1 ps-3">
             <ul class="list-group mt-2">
-                <li class="list-group-item list-group-item-secondary">&#127380; Cita: {{ date.id  }}</li>
+                <li class="list-group-item list-group-item-secondary">&#127380; Cita: {{ date.id  }}
+                    <form id="cancel-form" action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST" class="float-end confirm-form">
+                        {% csrf_token %} 
+                        <input type="hidden" name="description_job_cancel" id="description_job_cancel">
+                        <button class="btn btn-sm btn-danger confirm-button" data-action="delete" onclick="captureDescriptionJob()">
+                            Cancelar Cita
+                        </button>
+                    </form>
+                </li>
                 <li class="list-group-item">{{ date }}</li>
                 {% if date.description_customer %}
                 <li class="list-group-item">Descripción del Cliente: {{ date.description_customer }}</li>
@@ -21,58 +33,37 @@
                 <li class="list-group-item">Descripción del Cliente: Sin descripción</li>
                 {% endif %}
             </ul>
-                {% comment %} <li class="">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">{{ form_job.description_job.label_tag }}</span>
-                        {{ form_job.description_job }}
-                      </div>
-                </li> {% endcomment %}
 
-
-                {% comment %} <li class="list-group-item">
-                    <div class="input-group mb-3 ">  
-                        <label for="username" class="label w-100">
-                            <span name="username" class="form-control ">
-                                {{ form_job.description_job.label_tag }}
-                                {{ form_job.description_job }}
-                            </span>
-                        </label>
-                    </div>
-                </li>
-            </ul> {% endcomment %}
-            <form method="POST" action="{% url 'generate_ot' date.id %}" class="form-job-pending">
+  
+            <form id="form-pending" method="POST" action="{% url 'generate_ot' date.id %}" class="confirm-form form-job-pending">
                 {% csrf_token %}
-                {% comment %} <label for="description">Descripción:</label> {% endcomment %}
-                {% comment %} <input type="text" name="description" id="description" required> {% endcomment %}
-                {% comment %} {{ form_services.as_p }} {% endcomment %}
 
-                {% comment %} {{ form_job.as_p }} {% endcomment %}
-                <div class="job-pending input-group">
-                    <span class="input-group-text" id="basic-addon1">{{ form_job.description_job.label_tag }}</span>
+                {% comment %} <div class="job-pending input-group">
+                    <span class="input-group-text" >{{ form_job.description_job.label_tag }} <span class="badge bg-dark text-wrap mx-2 fst-italic">Descripción de trabajo o de cancelado</span></span>
+                    {{ form_job.description_job }}
+                </div> {% endcomment %}
+                <div class="job-pending input-group justify-content-center">
+                    {{ form_job.description_job.label_tag }} <span class="badge bg-dark text-wrap mx-2 fst-italic">Descripción de trabajo o de cancelado</span>
+                </div> 
+                <div class="job-pending input-group justify-content-center">
                     {{ form_job.description_job }}
                 </div>
 
-                {% comment %} <div class="input-group mb-3 ">  
-                    <label for="username" class="label w-100">
-                        <span name="username" class="form-control ">
-                            {{ form_job.description_job.label_tag }}
-                            {{ form_job.description_job }}
-                        </span>
-                    </label>
-                </div> {% endcomment %}
+                {% comment %} <script>
+                    const autoResizeTextarea = document.querySelector("textarea");
+                    autoResizeTextarea.addEventListener("keyup", e =>{
+                        let height = e.target.scrollHeight;
+                        autoResizeTextarea.style.height = `${height}px`;
+                    });
+                </script> {% endcomment %}
 
-                <div class="text-center mx-auto my-2">
-                    <button class="btn btn-success mt-3" type="submit">
+                <div class="text-center mx-auto my-3">
+                    <button class="btn btn-success confirm-button" data-action="confirm" >
                         Generar Trabajo
                     </button>
-                    <form action="{% url 'delete_job_pending' date.id 'pending' %}" method="POST">
-                        {% csrf_token %} 
-                        <button class="btn btn-danger mt-3">
-                            Cancelar
-                        </button>
-                    </form>
                 </div>
             </form>
+                
         </article>
         {% endif %}
         {% endfor %}
@@ -81,13 +72,6 @@
         <li class="list-group-item list-group-item-warning">{{ error }}</li>
     {% endif %}
     
-
-
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
 
 {% endblock content %}
 

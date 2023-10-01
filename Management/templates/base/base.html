@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% comment %} {% load messages %} {% endcomment %}
 {% load static  %}
 
 <html lang="en">
@@ -13,16 +12,20 @@
      {% load bootstrap5 %}
      {% bootstrap_css %}
      {% bootstrap_javascript %}
+
      <!-- ICONOS BOOTSTRAP 5 -->
+     {% comment %} https://fontawesome.com/icons {% endcomment %}
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- ALERTAS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{% static 'js/script.js' %}"></script>
 
     {% block css %}
     {% endblock css %}
-
-    <script src="{% static 'js/script.js' %}"></script>
 
     {% block script %}
     {% endblock script %}
@@ -33,7 +36,7 @@
 
     {% block nav %}
     {% with current_url=request.path %}
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top mb-5" data-bs-theme="dark">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top" data-bs-theme="dark">
         <div class="container-fluid mx-auto">
             <a class="navbar-brand" href="#">Getión Automotriz</a>
             <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,68 +60,38 @@
             </div>
         </div>
     </nav>
-    <br>
+
     {% endwith %}
     {% endblock nav %}
 
+    <br>
 
-
-
-    <section class="title text-primary container text-center my-3 flex-shrink-0">
-        {% block header %}
-        {% endblock header %}
-    </section>
+    {% block title %}
+    {% endblock title %}
 
     {% block login %}
     {% endblock login %}
 
+ 
     {% block main %}
-    {% endblock main %}
+    
+    {% endblock main %} 
 
     {% block error %}
 
-    {% comment %} {% if messages %}
-    {% for message in messages %} {% endcomment %}
-    <div id="toast-container" aria-live="polite" aria-atomic="true">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message" data-message-class="{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
-                    {{ message }}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message" data-message="{{ message }}" data-message-class="{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                <div id="toast-container" aria-live="polite" aria-atomic="true">
+                    {% comment %} MENSAJE {% endcomment %}
                 </div>
-            {% endfor %}
-        {% endif %}
-        {% comment %} <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div id="toast-message"  class="toast-body">
-                    {{ message }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-        </div>  {% endcomment %}
-    </div>
- 
-    {% comment %} {% endfor %}
-    {% endif %} {% endcomment %}
+        {% endfor %}
+    {% endif %}
 
-        {% comment %} <div class="messages toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {% for message in messages %}
-                        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div> {% endcomment %}
-        {% comment %} <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul> {% endcomment %}
     {% endblock error %}
 
 
-    {% comment %} {% block footer %} {% endcomment %}
     {% block footer %}
     <footer class="container-fluid bg-dark text-light mt-auto">
         <div class="container pt-3">
@@ -126,7 +99,7 @@
                 <div class="col-md-4">
                     <div class="info-logo">
                         <h2>Gestión Automotriz</h2>
-                        <p>Te esperamos para que agendes tu cita de mantenimiento con nosotros</p>
+                        <p>Te esperamos para que agendes tu cita de mantenimiento con nosotros.</p>
                     </div>
                 </div>
                 
@@ -134,7 +107,7 @@
                     <div class="info-contact">
                         <h4>Inforomación de Contacto</h4>
                         <div class="location">
-                            <h6>Información de taller:</h6>
+                            <h6>Información casa Matriz:</h6>
                             <p class="text-primary">
                                 <i class="fa-solid fa-location-dot"></i>
                                 <span>Pajaritos, Maipú #999</span>
@@ -155,27 +128,27 @@
                         <h4>Nosotros</h4>
                         <ul class="list-unstyled d-flex mt-3 pe-5">
                             <li class="pe-3">
-                                <a href="https://sebalopezx.github.io/Portafolio/" target="_blank" title="linkedin">
+                                <a href="https://sebalopezx.github.io/Portafolio/" target="_blank" title="Portafolio" alt="Portafolio">
                                     <i class="fa-solid fa-address-card fs-4"></i>
                                 </a>
                             </li>
                             <li class="pe-3">
-                                <a href="https://www.linkedin.com/in/sebastian-lopez-nunez" target="_blank" title="linkedin">
+                                <a href="https://www.linkedin.com/in/sebastian-lopez-nunez" target="_blank" title="Linkedin" alt="Linkedin">
                                     <i class="fa-brands fa-linkedin-in fs-4"></i>
                                 </a>
                             </li>
                             <li class="pe-3">
-                                <a href="https://github.com/sebalopezx" target="_blank" title="github">
+                                <a href="https://github.com/sebalopezx" target="_blank" title="Github" alt="Github">
                                     <i class="fa-brands fa-github fs-4"></i>
                                 </a>
                             </li>
                             <li class="pe-3">
-                                <a href="https://www.facebook.com/sebalopezxd/" target="_blank" title="facebook">
+                                <a href="https://www.facebook.com/sebalopezxd/" target="_blank" title="Facebook" alt="Facebook">
                                     <i class="fa-brands fa-facebook-f fs-4"></i>
                                 </a>
                             </li>
                             <li class="pe-3">
-                                <a href="https://www.instagram.com/sebalopzxd/" target="_blank" title="instagram">
+                                <a href="https://www.instagram.com/sebalopzxd/" target="_blank" title="Instagram" alt="Instagram">
                                     <i class="fa-brands fa-instagram fs-4"></i>
                                 </a>
                             </li>

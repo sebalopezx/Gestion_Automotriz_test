@@ -1,16 +1,4 @@
-// btnChecklist = document.getElementById("btnUpdateChecklist");
-
-// btnChecklist.addEvenListener('click', function(){
-//     // Obtenenemos los 3 formularios
-//     let = formStatus = document.getElementById("form-status");
-//     let = formWork = document.getElementById("form-work");
-//     let = formChecklist = document.getElementById("form-checklist");
-
-//     // Enviar y guardar
-//     formStatus.submit();
-//     formWork.submit();
-//     formChecklist.submit();
-// })
+// FUNCIONES PARA FORMULARIOS MULTIPLES DE CHECKLIST
 
 btnChecklist = document.getElementById("btn_update_checklist");
 

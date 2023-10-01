@@ -5,21 +5,12 @@
 {% endblock header %}
 
 {% block content %}
-{% comment %} <ul>
-    {% for date in list_dates %}
-        {% if date %}
-            <li>{{ date }}</li>
-        {% else %}
-            {{ error }}
-        {% endif %}
-    {% endfor %}    
-</ul> {% endcomment %}
-{% comment %} <ol class="list-group list-group-numbered mb-5"> {% endcomment %}
+
     {% if list_dates %}
         {% for date in list_dates %}
         <li class="list-group-item d-flex justify-content-between border mb-3">
             <div class="row col-12 text-center">
-                {% comment %} {{ date }} {% endcomment %}
+
                 <div class="col-md-4 col-sm-12">
                 {{ date.vehicle.brand|capfirst }}
                 {{ date.vehicle.model|capfirst }}
@@ -30,7 +21,7 @@
                 {{ date.attention }}
                 </div>
                 <div class="col-md-4 col-sm-12">
-                    <form action="{% url 'cancel_appointment' date.id %}" method="POST">
+                    <form action="{% url 'cancel_appointment' date.id %}" method="POST" class="confirm-form">
                         {% csrf_token %}
 
                         {% if date.inprogress or date.date_finished is not None %}
@@ -38,7 +29,7 @@
                             Cancelar Cita
                         </button>
                         {% else %}
-                        <button class="btnCancel btn btn-sm btn-danger ">
+                        <button class="btnCancel btn btn-sm btn-danger confirm-button" data-action="delete">
                             Cancelar Cita
                         </button>
                         {% endif %}
@@ -47,21 +38,21 @@
             </div>
         </li>
         {% endfor %}
-{% comment %} </ol> {% endcomment %}
+
     {% else %}
-        <p class="list-group-item list-group-item-warning mb-5">{{ error }}</p>
+        <li class="list-group-item list-group-item-warning mb-5">{{ error }}</li>
     {% endif %}
 
 
 
 
 <div class="mx-auto text-center mt-5">
-    <button class="btn btn-primary mt-3">
-        <a href="{% url 'register_date' %}">Registrar nueva Cita</a>
-    </button>
-    <button class="btn btn-primary mt-3">
-        <a href="{% url 'register_vehicle' %}">Registrar nuevo Vehículo</a>
-    </button>
+        <a class="btn btn-primary mt-3" href="{% url 'register_date' %}">
+            Registrar nueva Cita
+        </a>
+        <a class="btn btn-primary mt-3" href="{% url 'register_vehicle' %}">
+            Registrar nuevo Vehículo
+        </a>
 </div>
 
 

@@ -1,10 +1,13 @@
+cliente  prueba123
+recepcionista  prueba123
+
 Servicios
 
 Servicio diagnóstico 10000 10
 Cambio de Frenos  50000 50
 Cambio líquido frenos y purga 30000 30
 Cambio bujía x1 10000 5
-Cambio de aceite 20000 10
+Cambio de aceite 20000 15
 Cambio de neumáticos 40000 40
 Alineación y Balanceo 20000 15
 Cambio de correa 80000 80

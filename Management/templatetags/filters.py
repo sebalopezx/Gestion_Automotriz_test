@@ -13,30 +13,6 @@ def state_display(value):
 def coupon_valid(value):
     return "Válido" if value else "Ocupado"
 
-# @register.filter(name='capitalize_month')
-# def capitalize_month(value):
-#     # Verifica si el valor es un mes válido
-#     months = [
-#         'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-#         'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-#     ]
-
-#     if value.lower() in months:
-#         return value.capitalize()
-
-#     return value 
-
-
-
-# @register.filter(name='custom_date_format')
-# def custom_date_format(value):
-#     if value:
-#         # locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-#         formatted_date = value.strftime("%d de %B del %Y %H:%M %p")  # Formatea la fecha según tus especificaciones
-#         # locale.setlocale(locale.LC_TIME, '')
-#         return formatted_date.replace(formatted_date.split()[2], formatted_date.split()[2].capitalize())  # Capitaliza el mes
-#     else:
-#         return "En ejecución"
 
 
 @register.filter(name='custom_date_format')

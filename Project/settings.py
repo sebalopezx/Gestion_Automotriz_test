@@ -131,8 +131,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_GROUP_MODEL = 'Management.Customer'
-AUTH_GROUP_MODEL = 'Management.Recepcionist'
+AUTH_GROUP_MODEL_CUSTOMER = 'Management.Customer'
+AUTH_GROUP_MODEL_RECEPCIONIST = 'Management.Recepcionist'
 
 
 # Internationalization

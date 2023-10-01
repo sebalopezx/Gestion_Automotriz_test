@@ -4,7 +4,7 @@
 {% block nav %}
 {% with current_url=request.path %}
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Getión Automotriz</a>
             <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
                         <a class="nav-link {% if '/user_data/' in current_url %}active{% endif %}" 
                         href="{% url 'user_data' %}">Mis Datos</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle {% if '/register_vehicle/' in current_url or '/vehicle/' in current_url %}active{% endif %}" 
                         href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vehículos</a>
                         <ul class="dropdown-menu bg-dark">
@@ -64,15 +64,7 @@
                             <span class="badge btn btn-outline-danger">Cerrar Sesión</span>
                         </a>
                     </li>
-                    {% comment %} {% else %} {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link {% if '/signin/' in current_url %}active{% endif %}" 
-                        href="{% url 'signin' %}">Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if '/signup/' in current_url %}active{% endif %}" 
-                        href="{% url 'signup' %}">Registrarse</a>
-                    </li> {% endcomment %}
+
                     {% endif %}
                 </ul>          
             </div>
@@ -82,44 +74,13 @@
 {% endwith %}
 {% endblock nav %}
 
-    {% comment %} <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <form class="search-patent d-flex mx-auto" role="search">
-                <input class="form-control me-2" type="search" placeholder="Buscar Patente" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
-            </form>
-        </div>
-    </nav> {% endcomment %}
+{% block title %}
+<section class="title text-primary container text-center mt-5 my-3 flex-shrink-0">
+    {% block header %}
+    {% endblock header %}
+</section> 
+{% endblock title %}
 
-
-
-
-{% comment %} 
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'user_data' %}">Mis Datos</a></li>
-
-            <li><a href="{% url 'vehicle' %}">Ver Vehículos</a></li>
-            <li><a href="{% url 'appointment' %}">Ver Citas</a></li>
-            <li><a href="{% url 'register_vehicle' %}">Registrar Vehículo</a></li>
-            <li><a href="{% url 'register_date' %}">Registrar Cita</a></li>
-
-            <hr>
-            <li><a href="{% url 'signout' %}">Desconectarse</a></li>
-            {% else %}
-            <li><a href="{% url 'signin' %}">Iniciar Sesión</a></li>
-            <li><a href="{% url 'signup' %}">Registrarse</a></li>
-            {% endif %}
-        </ul>
-    </nav> {% endcomment %}
-
-    {% comment %} <section class="title container text-center">
-        {% block header %}
-        {% endblock header %}
-    </section> {% endcomment %}
-    
 
 {% block main %}
 <section class="container border rounded shadow p-4 mb-5">
@@ -129,7 +90,3 @@
 {% endblock main %}
 
 
-
-{% block script %}
-
-{% endblock script %}

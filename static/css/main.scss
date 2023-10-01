@@ -1,46 +1,57 @@
-:root {
-    --primary: #ff7c38;
-    --bs-primary-rgb: (255, 124, 56);
-}
 $color-primary: #ff7c38;
 
-//   $border-primary: red;
-// @import url("~boostrap/scss/_variables");
-// $primary: $color-primary;
-// @import url("~bootstrap/scss/bootstrap");
-// @import "~bootstrap5/bootstrap";
-// $primary: #ff7c38;
+
 @font-face {
     font-family: fuentePrincipal;
-    src: url('../fonts/Comfortaa-Bold.ttf') format('ttf');
+    src: url('../fonts/SpaceGrotesk-SemiBold.ttf') format('woff');
+}
+@font-face {
+    font-family: fuenteSecondary;
+    src: url('../fonts/Comfortaa-Regular.ttf') format('woff');
+}
+@font-face {
+    font-family: fuenteSecondaryBold;
+    src: url('../fonts/Comfortaa-Bold.ttf') format('woff');
 }
 
-@mixin main-font {
-    font-family: 'Confortaa-Regular.ttf','Roboto', sans-serif !important;
-}
-
-@mixin secondary-font {
-    font-family: "Poppins", sans-serif;
-}
 
 body{
-    // min-height: 100vh;
     overflow-y: scroll;
+    font-family: fuenteSecondary !important;
 }
-    // button:not(.btn-outline){
-//     color: whitesmoke !important;
-// }
+p,span,.btn,.btn:disabled,li{
+    font-size: .9rem !important;
+}
+h5{
+    font-family: fuenteSecondaryBold;
+    font-weight: 700;
+}
+h1{
+    color: $color-primary;
+    font-family: fuentePrincipal !important;
+}
+h2,h3,h4,.navbar-brand{
+    font-family: fuentePrincipal !important;
+}
 
+// BOTONES 
 .btn-primary {
     color: whitesmoke !important;
     background-color: $color-primary !important;
     border-color: $color-primary !important;
 }
-button{
-    transition: .5s;
+.btn,a,i,form button{
+    transition: .3s !important;
 }
-.btn-primary:hover,button:hover,button a:hover{
-    color: lighten($color: black, $amount: 3) !important;
+button,a{
+    color: whitesmoke !important;
+}
+button a{
+    text-decoration: none;
+}
+
+.btn:hover{
+    color: black !important;
 }
 .btn-outline-primary{
     border: $color-primary;
@@ -50,12 +61,11 @@ button{
     background-color: $color-primary !important;
     border-color: $color-primary !important;
 }
-.btn-outline-primary:disabled{
+button:disabled,.btn-outline-primary:disabled{
     color: black !important;
 }
 .navbar .navbar-toggler{
     color: $color-primary !important;
-    // background-color: $color-primary !important;
 }
 .text-primary{
     color: $color-primary !important;
@@ -63,40 +73,23 @@ button{
 .border{
     border: 1px solid $color-primary !important;
 }
-.form-login.border-primary{
-    border-color: #ff7c38 !important;
+
+
+// NAVEGADORES
+.dropdown-menu {
+    min-width: 200px; 
+    width: auto;
+    white-space: nowrap; 
+    overflow-x: hidden;
 }
-.form-login a{
-    color: darken($color: $color-primary, $amount: 25);
+.dropdown-item {
+    width: auto;
+    display: block;
 }
 
-h1{
-    color: $color-primary;
-    // font-family: fuentePrincipal;
-    // text-shadow: $color-primary 2px -2px 4px ;
-    // background: linear-gradient(0deg,$color-primary,darken($color: $color-primary, $amount: 30));
-    // background: radial-gradient(black,$color-primary  );
-    // -webkit-text-fill-color: transparent;
-//     background-clip: text;
-//     -webkit-background-clip: text;
-    // display: inline-block;
-    // position: relative;
-}
-// h1::after,h1::before{
-//     content: "";
-//     position: absolute;
-//     width: 80px;
-//     height: 3px;
-//     background-color: currentColor;
-//     top: 1.6rem;
-// }
-// h1::before{
-//     left: -100px;
-// }
-// h1::after{
-//     right: -100px;
-// }
 
+
+// INFORMACION CONTACTO
 .user-data li span{
     color: $color-primary;
     font-weight: bold;
@@ -104,41 +97,27 @@ h1{
 .info-contact span,i{
     color: $color-primary;
 }
-.about ul li a i:hover{
-    color: darken($color: $color-primary, $amount: 20) !important;
-}
-.info-contact i:hover{
-    background: lighten($color: black, $amount: 3) !important;
-}
-
-a:hover{
-    transition: .5s;
-    color: $color-primary !important;
-}
-
-
-.navbar .navbar-nav .nav-link:hover {
-    transition: .5s;
-    text-shadow: lighten($color: $color-primary, $amount: 10) 0px 0px 5px;
-    // text-decoration: underline;
-    // color: lighten($color: $color-primary, $amount: 5) !important; 
-    // color: darken($color: $color-primary, $amount: 20) !important;
-}
-.navbar .navbar-nav .nav-link.active {
-    color: $color-primary !important; 
-}
-// body{
-//     @include main-font;
-//     background: red;
-// }
-
-
 .user-data{
     max-width: 450px;
     margin: 0 auto;
 }
 
+// NAVEGADOR
+#search-nav{
+    top: 54px;
+}
+.navbar .navbar-nav .nav-link:hover,i:hover {
+    // transition: .5s;
+    color: $color-primary !important;
+    text-shadow: lighten($color: $color-primary, $amount: 10) 0px 0px 5px;
+}
+.navbar .navbar-nav .nav-link.active {
+    color: $color-primary !important; 
+}
 
+
+
+// CUPONES
 .container-coupon{
     background-color: #dedede;
 }
@@ -147,7 +126,6 @@ a:hover{
     width: 40% !important;
     position:relative;
 }
-
 .coupon .coupon-line .info::after, .coupon .coupon-line .info::before {
     content: '';
     position: absolute;
@@ -165,12 +143,6 @@ a:hover{
     left: -10px;
 }
 @media (max-width: 768px) {
-    .container-coupon{
-        // box-sizing: content-box;
-    }
-    .coupon .icon-coupon{
-        
-    }
     .coupon h4{
         font-size: 1rem;
         font-weight: bold;
@@ -178,18 +150,23 @@ a:hover{
     .coupon p{
         font-size: 0.9rem;
     }
-    .coupon .coupon-line{
-        // box-sizing: none ;
-    }
 }
 
-button a{
-    text-decoration: none;
-    color: whitesmoke;
+
+// FORMULARIOS 
+.form-login.border-primary{
+    border-color: #ff7c38 !important;
 }
-form a{
-    text-decoration: none;
+.form-login a,
+.forms-mechanics a{
+    text-decoration: underline;
+    color: black !important;
 }
+.form-login a:hover,
+.forms-mechanics a:hover{
+    color: $color-primary !important;
+}
+
 
 form .form-login{
     max-width: 460px;
@@ -198,63 +175,33 @@ form{
     max-width: 1200px;
     margin: 0 auto;
 }
-form .input-group{
-    // max-width: 1200px !important;
-}
 form .label{
-    // width: 600px;
     width: 600px;
     max-width: 1200px;
     text-align: right;
     display: inline-block;
     margin-right: 10px;
-    // padding-right: 10px;
 }
-// form .label{
-
-//     align-content: center;
-//     align-items: center;
-// }
-// form input,select{
-//     width: 50%;
-//     display: inline-block;
-//     margin-left: 10px;
-//     padding-left: 10px;
-// }
-
-
-// .list-group .list-group-item .label{
-//     // width: 100%;
-//     text-align: right;
-//     display: inline-block;
-//     padding-right: 10px;
-// }
-// .list-group .list-group-item span{
-//     text-align: left;
-//     width: 50%;
-//     // display: inline-block;
-//     margin-left: 10px;
-//     padding-left: 10px;
-// }
 
 div.input-group input,
 div.input-group select {
     width: 50%;
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 2px;
     padding-left: 10px;
 }
 form select{
     height: 30px;
 }
-// form select option:hover{
-//     background-color: greenyellow;
-//     color: red;
-// }
+
+form textarea:empty {
+    height: 28px;
+}
 form textarea{
     width: 50%;
-    height: 60px;
-    // resize: none;
+    height: 28px;
+    outline: none;
+    resize: none;
     overflow: hidden;
 }
 form input[type="text"][disabled]{
@@ -264,89 +211,33 @@ form input[type="text"][disabled]{
 
 @media (max-width: 1024px) {
     form.search-patent input{
-        // max-height: 40px;
-        height: 40px;
-        margin-top: 23px;
+        height: 38px;
+        margin-top: 0px;
     }
     form .form-login{
         max-width: 250px;
-        // margin-top: 100%;
-        // margin-bottom: 100%;
     }
-    // form .form-login-container{
-    //     max-width: 2500px;
-    // }
+
     form{
         max-width: 100%;
-        // width: 100%;
-    }
-    form .input-group{
-        // margin-top: 5px;
-        // margin-bottom: 100px;
-        // max-width: 5000px !important;
     }
     form .label{
-        // width: 600px;
         width: 100%;
         text-align: center;
-        
-        // display: block;
-        // height: 50px;
-        // margin-bottom: -15px;
     }
     div.input-group input,
     div.input-group select{
         width: 100%;
         display: inline-block;
-        margin-left: 0;
-        padding-left: 0;
+        margin-left: 0px;
+        padding-left: 5px;
     }
     form textarea{
         width: 100%;
-        height: 60px;
-        // resize: none;
-        overflow: hidden;
+
     }
-    // form button{
-    //     margin-top: 25px;
-    // }
-    // form .btnCancel{
-    //     margin-top: 0;
-    // }
-    // form textarea{
-    //     height: 25px;
-    // }
 }
-// .coupon .time {
-//     font-size: 1.6rem;
-// }
 
-
-// FOOTER
-// footer a{
-//     color: whitesmoke;
-// }
-// footer h4{
-//     text-transform: uppercase;
-//     font-weight: bold;
-// }
-// footer ul{
-//     display: flex;
-//     list-style: none;
-//     // width: 535px;
-// }
-// footer ul li{
-//     margin-left: 0;
-// }
-// footer ul li a{
-//     // font-family: "fuentePrincipal"; 
-//     text-align: none;
-//     color: $color-primary;
-//     margin: 0 15px;
-//     padding: 3px;
-//     transition: 0.5s;
-//     text-decoration: none;
-// }
 
 // MECANICOS
 .mechanic-list article{
@@ -356,30 +247,61 @@ form input[type="text"][disabled]{
     height: 50px;
     overflow: hidden;
 }
-.mechanic-list article .card{
-    // height: 100%;
-}
 
+
+// TRABAJOS
 .jobs .btn-jobs .custom-btn{
     width: 110px;
 }
-
 .jobs .form-job-pending {
     padding-left: 0;
     width: 100%;
 }
 .jobs .form-job-pending .job-pending textarea{
-    width: 100%;
-  
+    width: 100%; 
 }
 .list-services-job{
     width: fit-content;
 }
 
 
+// TOAST DE INFORMACION
 #toast-container{
     position: fixed;
     bottom: 0; 
     right: 0;
     z-index: 999;
+}
+
+
+// FONDO LOGIN
+.fondo-login{
+    min-height: 100vh; 
+    // min-height: 100vh; 
+    // max-height: 75vh; 
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center; 
+    // align-items: center; 
+    // min-height: 75vh;
+    // max-height: 90vh;
+    background-image: url("../images/fondo_login.jpg") !important;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.form-login{
+    background: transparent;
+    backdrop-filter: blur(20px);
+    /* color: whitesmoke; */
+}
+
+.form-login span{
+    /* color: whitesmoke; */
+    background: transparent;
+}
+.form-login a{
+    font-weight: 600;
 }

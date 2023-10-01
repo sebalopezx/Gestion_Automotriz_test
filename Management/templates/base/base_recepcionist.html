@@ -3,7 +3,7 @@
 
 {% block nav %}
 {% with current_url=request.path %}
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+<nav class="navbar navbar-dark bg-dark navbar-expand-xl bg-body-tertiary fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Getión Automotriz</a>
         <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,68 +78,39 @@
                         <span class="badge btn btn-outline-danger">Cerrar Sesión</span>
                     </a>
                 </li>
-                {% comment %} {% else %}
-                <li class="nav-item">
-                    <a class="nav-link {% if '/signin/' in current_url %}active{% endif %}" 
-                    href="{% url 'signin' %}">Iniciar Sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if '/signup/' in current_url %}active{% endif %}" 
-                    href="{% url 'signup' %}">Registrarse</a>
-                </li> {% endcomment %}
+
                 {% endif %}
-            </ul>          
+            </ul> 
+            
+            <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary ">
+                <div class="container-fluid">
+                    <form id="search-nav" class="search-patent d-flex mx-auto " role="search"
+                    method='GET' action="{% url 'search_patent' %}"> 
+
+                        {% csrf_token %}
+                        <input class="form-control me-2" type="search" placeholder="Buscar Patente" aria-label="Search" name="patent">
+                        <button class="btn btn-outline-success" type="submit">
+                                Buscar
+                        </button>
+                    </form>
+                </div>
+            </nav> 
+            
         </div>
     </div>
 </nav>
 {% endwith %}
 
-<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <form class="search-patent d-flex mx-auto" role="search"
-        method='GET' action="{% url 'search_patent' %}">
-            {% csrf_token %}
-            <input class="form-control me-2" type="search" placeholder="Buscar Patente" aria-label="Search" name="patent">
-            <button class="btn btn-outline-success" type="submit">
-                {% comment %} <a href="{% url 'search_patent' %}"> {% endcomment %}
-                    Buscar
-                {% comment %} </a> {% endcomment %}
-            </button>
-        </form>
-    </div>
-</nav>
+
 
 {% endblock nav %}
 
-    {% comment %} 
-    <nav>
-        <ul>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'user_data' %}">Mis Datos</a></li>
-
-            <li><a href="{% url 'register_recepcionist' %}">Registrar Recepcionista</a></li>
-
-            <li><a href="">Gestión de Mecánicos</a></li>
-            <li><a href="{% url 'list_mechanic' %}">Listado de Mecánicos</a></li>
-            <li><a href="{% url 'register_mechanic' %}">Registrar Mecánico</a></li>
-            <li><a href="">Gestión de Trabajos</a></li>
-            <li><a href="{% url 'list_jobs_pending' %}">Trabajos Pendientes</a></li>
-            <li><a href="{% url 'list_jobs_diary' %}">Trabajos Del Día</a></li>
-            <li><a href="{% url 'list_jobs_inprogress' %}">Trabajos En Ejecución</a></li>
-            <li><a href="{% url 'list_jobs_completed' %}">Trabajos Finalizados</a></li>
-
-
-            <hr>
-            <li><a href="{% url 'signout' %}">Desconectarse</a></li>
-            {% else %}
-            <li><a href="{% url 'signin' %}">Iniciar Sesión</a></li>
-            <li><a href="{% url 'signup' %}">Registrarse</a></li>
-            {% endif %}
-        </ul>
-    </nav> {% endcomment %}
-
-{% block header %}
-{% endblock header %}
+{% block title %}
+<section class="title text-primary container text-center mt-5 my-3 flex-shrink-0">
+    {% block header %}
+    {% endblock header %}
+</section> 
+{% endblock title %}
 
 {% block main %}
 <section class="container border rounded shadow p-4 mb-5">
@@ -176,6 +147,3 @@
 
 
 
-{% block script %}
-
-{% endblock script %}

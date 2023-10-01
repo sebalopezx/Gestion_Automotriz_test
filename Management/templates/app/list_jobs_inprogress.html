@@ -21,29 +21,25 @@
                 </ul>
                 
                     <div class="btn-jobs justify-content-between text-center py-3">
-    
-                        <button class="btn btn-info custom-btn mb-2">
-                            <a href="{% url 'checklist' job.id %}">
-                                CheckList
-                            </a>
-                        </button>
-                        <button class="btn btn-warning custom-btn mb-2">
-                            <a href="{% url 'update_job' job.id %}">
-                                Agregar 
-                            </a>   
+                        <a class="btn btn-info custom-btn mb-2" href="{% url 'checklist' job.id %}">
+                            CheckList
+                        </a>
+                        <a class="btn btn-warning custom-btn mb-2" href="{% url 'update_job' job.id %}">
+                            Agregar 
+                        </a>   
                         </button>
             
-                        <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST" class="d-inline">
+                        <form action="{% url 'delete_job_inprogress' job.appointment.id 'inprogress' %}" method="POST" class="d-inline confirm-form">
                             {% csrf_token %} 
-                            <button class="btn btn-danger custom-btn mb-2">
+                            <button class="btn btn-danger custom-btn mb-2 confirm-button" data-action="delete">
                                 Cancelar
                             </button>
                         </form>
                     
                         {% if job.status.id == 7 %}
-                        <form action="{% url 'completed_job' job.id %}" method="POST" class="d-inline"> 
+                        <form action="{% url 'completed_job' job.id %}" method="POST" class="d-inline confirm-form"> 
                             {% csrf_token %} 
-                            <button class="btn btn-success custom-btn mb-2">
+                            <button class="btn btn-success custom-btn mb-2 confirm-button" data-action="confirm">
                                 Finalizar
                             </button>
                         </form>
@@ -65,15 +61,10 @@
     {% endif %}
 
 
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
 
 {% endblock content %}
 
 
-{% block script %}
+{% comment %} {% block script %} {% endcomment %}
     {% comment %} <script src="{% static 'js/occupied_dates.js' %}"></script> {% endcomment %}
-{% endblock script %}
+{% comment %} {% endblock script %} {% endcomment %}

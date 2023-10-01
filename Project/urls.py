@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 # from Management.views import signin
 from Management import views
 
@@ -71,7 +74,14 @@ urlpatterns = [
     path('list_service/<int:id_service>/<int:id>/delete/', views.delete_service ,name='delete_service'),
 
     # path('search/<str:patent>/', views.search_patent, name='search_patent')
-    re_path('search_patent/(?P<patent>[^/]+)?/', views.search_patent, name='search_patent')
+
+    # re_path('search_patent/(?P<patent>[^/]+)?/', views.search_patent, name='search_patent')
+    # re_path('search_patent/(?P<patent>.*)/', views.search_patent, name='search_patent')
+    # re_path('search_patent/(?P<patent>[.*]+)?/', views.search_patent, name='search_patent')
+    re_path('search_patent/(?P<patent>[\w\d]+)?/', views.search_patent, name='search_patent')
+
+
+
     # (?P<patent>.+)/$
     #  /(?P<patent>[^/]+)?/
     # path('list_jobs/', views.list_jobs ,name='list_jobs'),
@@ -79,4 +89,4 @@ urlpatterns = [
     # path('list_jobs/<int:id>/ot/', views.generate_ot ,name='generate_ot'),
     # path('list_jobs/<int:id>/update/', views.update_job ,name='update_job'),
     # path('list_jobs/<int:id>/delete/', views.delete_job ,name='delete_job'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
