@@ -18,6 +18,7 @@ from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # URL base para los archivos multimedia
 MEDIA_URL = '/media/'
 # Ruta al directorio donde se guardarán los archivos multimedia
@@ -152,7 +153,8 @@ AUTH_GROUP_MODEL_RECEPCIONIST = 'Management.Recepcionist'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
+# import locale
+# locale._getdefaultlocale = (lambda *args: ['es_ES', 'utf8'])
 LANGUAGE_CODE = 'es-ES'
 
 TIME_ZONE = 'America/Santiago'
