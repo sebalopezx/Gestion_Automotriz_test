@@ -10,13 +10,22 @@
 {% block main %}
 {% comment %} {% if base_template == 'base.html' %} {% endcomment %}
 <section class="container border rounded shadow p-4 mb-5">
+    <h3 class="text-center mb-4">~Test de APP~</h3>
+    <div class="col-md-12 ">
+        <div class="card-body text-center border rounded mb-2">
+        {% comment %} <h5 class="card-title">Agendar y reservar citas de mantenimiento</h5> {% endcomment %}
+        <p class="card-text">Para probar el sistema puede ingresar con dos usuarios previamente registrados en la base de datos.</p>
+        <p class="card-text">Usuario y Contraseña: <small class="text-muted">cliente  |  prueba123</small></p>
+        <p class="card-text">Usuario y Contraseña: <small class="text-muted">recepcionista  |  prueba123</small></p>
+        </div>
+    </div>
 
     <h3 class="text-center mb-4">~Interfáz Cliente~</h3>
     <div class="card mb-3" style="max-width: 1540px;">
         <div class="row g-0">
         <div class="col-md-4">
             <a href="{% static 'images/mantenimiento.PNG' %}">
-                <img src="{% static 'images/mantenimiento.PNG' %}" class="img-fluid img-thumbnail rounded-start" alt="...">
+                <img src="{% static 'images/mantenimiento.PNG' %}" class="img-fluid img-thumbnail rounded-start" alt="mantenimiento">
             </a>
         </div>
         <div class="col-md-8">
@@ -33,7 +42,7 @@
         <div class="row g-0">
             <div class="col-md-4 ">
                 <a href="{% static 'images/checklist.PNG' %}">
-                    <img src="{% static 'images/checklist.PNG' %}" class="img-fluid img-thumbnail rounded-start " alt="...">
+                    <img src="{% static 'images/checklist.PNG' %}" class="img-fluid img-thumbnail rounded-start " alt="checklist">
                 </a>
             </div>
             <div class="col-md-8">
@@ -49,8 +58,8 @@
     <div class="card mb-3" style="max-width: 1540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <a href="{% static 'images/cupon.PNG' %}">
-                    <img src="{% static 'images/cupon.PNG' %}" class="img-fluid img-thumbnail rounded-start" alt="...">
+                <a href="{% static 'images/cupon.png' %}">
+                    <img src="{% static 'images/cupon.png' %}" class="img-fluid img-thumbnail rounded-start" alt="cupon">
                 </a>
             </div>
             <div class="col-md-8">
@@ -68,7 +77,7 @@
         <div class="row g-0">
             <div class="col-md-4">
                 <a href="{% static 'images/user_mechanic.png' %}">
-                    <img src="{% static 'images/user_mechanic.png' %}" class="img-fluid rounded-start" alt="...">
+                    <img src="{% static 'images/user_mechanic.png' %}" class="img-fluid rounded-start" alt="user_mechanic">
                 </a>
             </div>
             <div class="col-md-8">
@@ -84,8 +93,8 @@
     <div class="card mb-3" style="max-width: 1540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <a href="{% static 'images/list_jobs.png' %}">
-                    <img src="{% static 'images/list_jobs.png' %}" class="img-fluid rounded-start" alt="...">
+                <a href="{% static 'images/list_jobs.PNG' %}">
+                    <img src="{% static 'images/list_jobs.PNG' %}" class="img-fluid rounded-start" alt="list_jobs">
                 </a>
             </div>
             <div class="col-md-8">
@@ -102,7 +111,7 @@
         <div class="row g-0">
             <div class="col-md-4">
                 <a href="{% static 'images/state_job.png' %}">
-                    <img src="{% static 'images/state_job.png' %}" class="img-fluid rounded-start" alt="...">
+                    <img src="{% static 'images/state_job.png' %}" class="img-fluid rounded-start" alt="state_job">
                 </a>
             </div>
             <div class="col-md-8">
