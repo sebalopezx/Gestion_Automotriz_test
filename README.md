@@ -2,7 +2,7 @@
 `<link>` : <https://github.com/sebalopezx/Gestion_Automotriz><br>
 `<link>` : <https://gestion-automotriz.onrender.com/>
 
-<img src="https://github.com/sebalopezx/Gestion_Automotriz/blob/master/static/images/fondo_login.PNG" alt="Logo del proyecto" width="100" height="100">
+<img src="https://github.com/sebalopezx/Gestion_Automotriz/blob/master/static/images/fondo_login.jpg" alt="Logo del proyecto" width="100" height="100">
 
 > Logo del proyecto
 
@@ -60,7 +60,7 @@ El cliente podra gestionar:
 - Visualizar estado de vehículo en mantenimiento
 
 
-![](https://github.com/sebalopezx/Gestion_Automotriz/blob/master/static/images/state_job.PNG.)
+![](https://github.com/sebalopezx/Gestion_Automotriz/blob/master/static/images/state_job.PNG)
 > Listar vehículos y entrar a ver estado en tiempo real
 
 
