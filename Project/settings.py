@@ -32,8 +32,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = 'RENDER' not in os.environ
+# DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
 
 ALLOWED_HOSTS = []
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'Management',
     'bootstrap5',
 ]
+
+LOGOUT_REDIRECT_URL = 'index'
 
 # Configuración personalizada de Bootstrap5
 BOOTSTRAP5 = {
@@ -80,7 +82,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'django.middleware.cache.CacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
+CACHE_MIDDLEWARE_SECONDS = 0
 
 ROOT_URLCONF = 'Project.urls'
 
@@ -149,6 +156,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_GROUP_MODEL_CUSTOMER = 'Management.Customer'
 AUTH_GROUP_MODEL_RECEPCIONIST = 'Management.Recepcionist'
+# Para desarrollo, puede ser True en producción
+SESSION_COOKIE_SECURE = True  
+SESSION_COOKIE_NAME = 'sessionid'  
+SESSION_COOKIE_AGE = 1209600  
 
 
 # Internationalization

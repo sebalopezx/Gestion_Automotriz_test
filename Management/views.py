@@ -26,7 +26,8 @@ from .constants import POINTS
 # 
 from django.utils import timezone
 from django.db.models import Q
-
+# CACHE
+from django.core.cache import cache
 
 
 
@@ -82,7 +83,7 @@ def signin(request):
         if user is None:
             return render(request,'signin.html',{
                 'form_login':AuthenticationForm(),
-                'error':'Username or Password is incorrect'
+                'error':'Usuario o Contraseña inválidos.'
             })
         else:
             # Crea la cookie con fecha de expiracion
@@ -93,11 +94,22 @@ def signin(request):
                 return redirect('list_jobs_diary')
 
 
+
 @login_required
 def signout(request):
     logout(request)
+    print(cache)
+    cache.clear()
+    # session.clear()
+    request.session.flush()
     return redirect('index')
 
+    # # Agregar encabezados para evitar el almacenamiento en caché
+    # response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    # response['Pragma'] = 'no-cache'
+    # response['Expires'] = '0'
+
+    # return response
 
 
 # VIEWS  PARA AMBOS
